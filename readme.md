@@ -1,4 +1,4 @@
-# jQuery.template
+# jQuery.loadTemplate
 
 jQuery Template is a jQuery plugin that makes using templates easy and quick. The plugin supports loading HTML files as templates, or taking a jQuery object as the template (usually using script tags to hold the template).
 
