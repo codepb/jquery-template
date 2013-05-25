@@ -11,7 +11,7 @@ An example template is below:
         <div data-content="date"></div>
         <img data-src="authorPicture" data-alt="author"/>
         <div data-content="post"></div>
-    </div>
+    </script>
 
 And to use this do the following:
 
