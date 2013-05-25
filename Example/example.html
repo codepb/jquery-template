@@ -5,6 +5,39 @@
 		<script src="../jquery.template-0.1.js"></script>
 	</head>
 	<body>
+        <style>
+            * {
+                color:  #333;
+                font-family: Helvetica, arial, freesans, clean, sans-serif;
+            }
+            
+            .simple-template-container {
+                width: 400px;
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin:  10px;
+            }
+            
+            .simple-template-container img {
+                display: inline-block;
+            }
+            
+            .simple-template-container .post-container {
+                display: inline-block;
+                width: 240px;
+                margin-left: 10px;
+                vertical-align: top;
+            }
+            
+            .script-template-container {
+                width: 140px;
+                border: 1px dashed #ccc;
+                padding: 10px;
+                margin: 10px;
+                display: inline-block;
+            }
+            
+        </style>
         <h1>Example Usage of jQuery.loadTemplate</h1>
         <h2>Example of loading an html template from the application</h2>
 		<div class="simple-template-container"></div>
@@ -14,9 +47,11 @@
         <div class="script-template-container"></div>
         <script type="text/html" id="template">
             <img data-src="authorPicture" data-alt="author"/>
-            <div data-content="author"></div>
-            <div data-content="date"></div>
-            <div data-content="post"></div>
+            <div class="post-container">
+                <div data-content="author"></div>
+                <div data-content="date"></div>
+                <div data-content="post"></div>
+            </div>
         </script>
 
 		<script>
@@ -31,11 +66,11 @@
 
                 // Load template from our templates folder,
                 // and populate the data from the post object.
-				$(".simple-template-container").loadTemplate("Templates/simple.html",post);
+				$(".simple-template-container").loadTemplate("Templates/simple.html", post);
 
                 // Load template from element on same page,
                 // and populate the data from the post object.
-                $(".script-template-container").loadTemplate($("#template"), post);
+                $(".script-template-container").loadTemplate("#template", post);
 			});
 		</script> 
 	</body>

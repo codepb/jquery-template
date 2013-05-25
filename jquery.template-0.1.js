@@ -1,12 +1,28 @@
-(function ($) {
+(function ($, undefined) {
     var templates = {};
 
-    function loadTemplate(template, data, callback) {
-        var $that = this
-        if (!(template instanceof jQuery) && templates[template]) {
+    function loadTemplate(template, data, options) {
+        var $that = this;
+        var settings = $.extend({
+            // These are the defaults.
+            overwriteCache: false,
+            callback: null
+        }, options);
+
+        function containsSlashes(str) {
+            return typeof str == "string" && str.indexOf("/") > -1;
+        }
+
+        if(!containsSlashes(template)) {
+            var $template = $(template);
+        }
+
+        var isFile = settings.isFile || (typeof settings.isFile === "undefined" && (!$template || $template.length == 0));
+        
+        if (isFile && !settings.overwriteCache && templates[template]) {
             $templateContainer = templates[template];
             prepareTemplate($templateContainer, data);
-        } else if (!(template instanceof jQuery)) {
+        } else if (isFile) {
             var $templateContainer = $("<div/>");
             $templateContainer.load(template, function () {
                 templates[template] = $templateContainer;
@@ -14,10 +30,10 @@
             });
         } else {
             var $templateContainer = $("<div/>");
-            if (template.is("script")) {
-                template = $.parseHTML(template.html().trim());
+            if ($template.is("script")) {
+                $template = $.parseHTML($template.html().trim());
             }
-            $templateContainer.html(template);
+            $templateContainer.html($template);
             prepareTemplate($templateContainer, data);
         }
         return this;
@@ -27,8 +43,8 @@
             $that.each(function () {
                 $(this).html(template.html());
             });
-            if (callback && typeof callback === "function") {
-                callback();
+            if (settings.callback && typeof settings.callback === "function") {
+                settings.callback();
             }
         }
 
