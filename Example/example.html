@@ -50,7 +50,7 @@
             <div class="post-container">
                 <div data-content="author"></div>
                 <div data-content="date"></div>
-                <div data-content="post"></div>
+                <div data-content="post" data-format="sameCaseFormatter" data-format-template="upper"></div>
             </div>
         </script>
 
@@ -63,6 +63,22 @@
                         authorPicture: 'img/joeBloggs.gif',
                         post: 'This is the contents of my post'
                     }
+
+                $.addTemplateFormatter({
+                    upperCaseFormatter : function(value, template) {
+                            return value.toUpperCase();
+                        },
+                    lowerCaseFormatter : function(value, template) {
+                            return value.toLowerCase();
+                        },
+                    sameCaseFormatter : function(value, template) {
+                            if(template == "upper") {
+					            return value.toUpperCase();
+				            } else {
+					            return value.toLowerCase();
+				            }
+                        }
+                });
 
                 // Load template from our templates folder,
                 // and populate the data from the post object.

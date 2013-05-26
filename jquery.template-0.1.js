@@ -1,32 +1,50 @@
 (function ($, undefined) {
     var templates = {};
 
+    var formatters = {
+        getFormattedDateString: function (dateString, template) {
+            template = template || "MMMM yyyy";
+            var date = new Date(dateString);
+            return date.toLocaleDateString(template);
+        }
+    };
+
     function loadTemplate(template, data, options) {
         var $that = this;
         var settings = $.extend({
             // These are the defaults.
             overwriteCache: false,
-            callback: null
+            callback: null,
+            errorMessage: "There was an error loading the template"
         }, options);
 
         function containsSlashes(str) {
             return typeof str == "string" && str.indexOf("/") > -1;
         }
 
-        if(!containsSlashes(template)) {
+        if (!containsSlashes(template)) {
             var $template = $(template);
         }
 
         var isFile = settings.isFile || (typeof settings.isFile === "undefined" && (!$template || $template.length == 0));
-        
+
         if (isFile && !settings.overwriteCache && templates[template]) {
             $templateContainer = templates[template];
             prepareTemplate($templateContainer, data);
         } else if (isFile) {
             var $templateContainer = $("<div/>");
-            $templateContainer.load(template, function () {
-                templates[template] = $templateContainer;
-                prepareTemplate($templateContainer, data);
+            $templateContainer.load(template, function (responseText, textStatus, XMLHttpRequest) {
+                if(textStatus == "error") {
+                    $that.each(function () {
+                        $(this).html(settings.errorMessage);
+                    });
+                    if (settings.callback && typeof settings.callback === "function") {
+                        settings.callback();
+                    }
+                } else {
+                    templates[template] = $templateContainer;
+                    prepareTemplate($templateContainer, data);
+                }
             });
         } else {
             var $templateContainer = $("<div/>");
@@ -55,9 +73,8 @@
                 var formatter = $elem.attr("data-format");
                 if (formatter && typeof formatters[formatter] === "function") {
                     var formatTemplate = $elem.attr("data-format-template");
-                    $elem.html(Formatters[formatter](value), formatTemplate);
-                }
-                else {
+                    $elem.html(formatters[formatter](value, formatTemplate));
+                } else {
                     $elem.html(value);
                 }
             });
@@ -99,16 +116,17 @@
                 return;
             }
         }
-
-        var formatters = {
-            getFormattedDateString: function (dateString, template) {
-                template = template || "MMMM yyyy";
-                var date = new Date(dateString);
-                return date.toLocaleDateString(template);
-            }
-        };
     };
 
+    function addTemplateFormatter(key, formatter) {
+        if (formatter) {
+            formatters[key] = formatter;
+        } else {
+            formatters = $.extend(formatters, key);
+        }
+    }
+
     $.fn.loadTemplate = loadTemplate;
+    $.addTemplateFormatter = addTemplateFormatter;
 
 })(jQuery);

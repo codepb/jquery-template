@@ -32,3 +32,35 @@ Similarly the content of the template could be held in a separate html file with
             authorPicture: 'Authors/JoeBloggs.jpg',
             post: 'This is the contents of my post'
         });
+
+It is also possible to define data formatters. These are assigned through the `$.addTemplateFormatter` method. This function either accepts a map of functions and the keys that they will be referenced by, or a single function with a single key as two separate parameters. Each formatter takes two values, the value being assigned to the content, and a template to use to define how this data is displayed. The data-format-template may be empty. Example usage of this is below:
+
+    $.addTemplateFormatter("UpperCaseFormatter",
+        function(value, template) {
+            return value.toUpperCase();
+        });
+
+Alternatively with a map:
+
+    $.addTemplateFormatter({
+        UpperCaseFormatter : function(value, template) {
+                return value.toUpperCase();
+            },
+        LowerCaseFormatter : function(value, template) {
+                return value.toLowerCase();
+            },
+        SameCaseFormatter : function(value, template) {
+                if(template == "upper") {
+					return value.toUpperCase();
+				} else {
+					return value.toLowerCase();
+				}
+            }
+    });
+
+To call these templates, simply the following will work:
+
+	<div data-content="post" data-template="SameCaseFormatter"
+		data-template-format="upper"></div>
+
+Formatters must be added before they are used else a template will not be able to access them. Formatters are used at the time of populating the data.
