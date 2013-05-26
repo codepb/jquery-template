@@ -6,7 +6,7 @@
         "templates",
         "templating"
     ],
-    "version": "0.0.1",
+    "version": "0.1.0",
     "author": {
         "name": "Paul Burgess and other contributors",
         "url": "https://github.com/codepb/jquery-template"
