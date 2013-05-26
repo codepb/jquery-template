@@ -1,12 +1,12 @@
 {
-    "name": "templating",
+    "name": "loadTemplate",
     "title": "jQuery Templating",
     "description": "jQuery plugin for loading and using templates.",
     "keywords": [
         "templates",
         "templating"
     ],
-    "version": "0.1.2",
+    "version": "0.1.3",
     "author": {
         "name": "Paul Burgess and other contributors",
         "url": "https://github.com/codepb/jquery-template"
