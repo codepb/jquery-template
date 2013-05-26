@@ -1,0 +1,26 @@
+{
+    "name": "template",
+    "title": "jQuery Template",
+    "description": "jQuery plugin for loading and using templates."
+    "keywords": [
+        "templates",
+        "templating"
+    ],
+    "version": "0.0.1",
+    "author": {
+        "name": "Paul Burgess and other contributors",
+        "url": "https://github.com/codepb/jquery-template"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/codepb/jquery-template/blob/master/MIT-LICENSE.txt"
+        }
+    ],
+    "bugs": "https://github.com/codepb/jquery-template/issues",
+    "homepage": "https://github.com/codepb/jquery-template",
+    "docs": "https://github.com/codepb/jquery-template",
+    "dependencies": {
+        "jquery": ">=1.5"
+    }
+}
