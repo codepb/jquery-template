@@ -1,6 +1,6 @@
 {
-    "name": "template",
-    "title": "jQuery Template",
+    "name": "templating",
+    "title": "jQuery Templating",
     "description": "jQuery plugin for loading and using templates.",
     "keywords": [
         "templates",
