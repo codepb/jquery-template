@@ -64,3 +64,12 @@ To call these templates, simply the following will work:
 		data-template-format="upper"></div>
 
 Formatters must be added before they are used else a template will not be able to access them. Formatters are used at the time of populating the data.
+
+There are a number of options the plugin accepts. These are:
+
+- "overwriteCache" (default false) - Whether to ignore the cache and reload the template (if you've previously loaded the template, but it might have changed, you'll want to set this to true.
+- "complete" (default null) - Callback function to call on complete. Will always be called regardless of success or failure.
+- "success" (default null) - Callback function to call on successful completion.
+- "error" (default, outputting error message to template container) - Callback function to call on error.
+- "errorMessage" (default "There was an error loading the template.") - Error message for the default error callback to use. This will not be used if you set an error callback function.
+- "isFile" (default undefined) - flag to help speed up the process of deciding where to load the template from. Set to true if the template is an external file to load via ajax, false if it's a jQuery selector for an element in the document. Default undefined means the plugin will check first in the document, then attempt to load external file.
