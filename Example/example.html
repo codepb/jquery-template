@@ -2,7 +2,7 @@
 	<head>
 		<title>Example of Template Loading</title>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-		<script src="../jquery.loadTemplate-0.1.3.js"></script>
+		<script src="../jquery.loadTemplate-0.1.4.js"></script>
 	</head>
 	<body>
         <style>
@@ -87,6 +87,7 @@
                 // Load template from element on same page,
                 // and populate the data from the post object.
                 $(".script-template-container").loadTemplate("#template", post);
+                $(".test").loadTemplate("this/does/not/exist.html", post);
 			});
 		</script> 
 	</body>

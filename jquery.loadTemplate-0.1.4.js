@@ -14,8 +14,14 @@
         var settings = $.extend({
             // These are the defaults.
             overwriteCache: false,
-            callback: null,
-            errorMessage: "There was an error loading the template"
+            complete: null,
+            success: null,
+            error: function () {
+                $that.each(function () {
+                    $(this).html(settings.errorMessage);
+                });
+            },
+            errorMessage: "There was an error loading the template."
         }, options);
 
         function containsSlashes(str) {
@@ -31,19 +37,25 @@
         if (isFile && !settings.overwriteCache && templates[template]) {
             $templateContainer = templates[template];
             prepareTemplate($templateContainer, data);
+            if (typeof settings.success == "function") {
+                settings.success();
+            }
         } else if (isFile) {
             var $templateContainer = $("<div/>");
             $templateContainer.load(template, function (responseText, textStatus, XMLHttpRequest) {
-                if(textStatus == "error") {
-                    $that.each(function () {
-                        $(this).html(settings.errorMessage);
-                    });
-                    if (settings.callback && typeof settings.callback === "function") {
-                        settings.callback();
+                if (textStatus == "error") {
+                    if (typeof settings.error == "function") {
+                        settings.error()
+                    }
+                    if (typeof settings.complete === "function") {
+                        settings.complete();
                     }
                 } else {
                     templates[template] = $templateContainer;
                     prepareTemplate($templateContainer, data);
+                    if (textStatus == "success" && typeof settings.success == "function") {
+                        settings.success();
+                    }
                 }
             });
         } else {
@@ -53,6 +65,9 @@
             }
             $templateContainer.html($template);
             prepareTemplate($templateContainer, data);
+            if (typeof settings.success == "function") {
+                settings.success();
+            }
         }
         return this;
 
@@ -61,8 +76,8 @@
             $that.each(function () {
                 $(this).html(template.html());
             });
-            if (settings.callback && typeof settings.callback === "function") {
-                settings.callback();
+            if (typeof settings.complete === "function") {
+                settings.complete();
             }
         }
 
