@@ -1,6 +1,6 @@
 (function ($, undefined) {
     var templates = {};
-
+    var queue = {};
     var formatters = {
         getFormattedDateString: function (dateString, template) {
             template = template || "MMMM yyyy";
@@ -17,7 +17,7 @@
             complete: null,
             success: null,
             error: function () {
-                $that.each(function () {
+                $(this).each(function () {
                     $(this).html(settings.errorMessage);
                 });
             },
@@ -36,35 +36,59 @@
 
         if (isFile && !settings.overwriteCache && templates[template]) {
             $templateContainer = templates[template];
-            prepareTemplate($templateContainer, data);
+            prepareTemplate.call($that, $templateContainer, data);
             if (typeof settings.success == "function") {
                 settings.success();
             }
+        } else if (isFile && !settings.overwriteCache && templates.hasOwnProperty(template)) {
+            if (queue[template]) {
+                queue[template].push(data);
+            } else {
+                queue[template] = [{ data: data, selection: $that}];
+            }
         } else if (isFile) {
             var $templateContainer = $("<div/>");
+            templates[template] = null;
             $templateContainer.load(template, function (responseText, textStatus, XMLHttpRequest) {
                 if (textStatus == "error") {
                     if (typeof settings.error == "function") {
-                        settings.error()
+                        settings.error.call($that);
+                        $(queue[template]).each(function (key, value) {
+                            settings.error.call(value.selection);
+                        });
                     }
                     if (typeof settings.complete === "function") {
-                        settings.complete();
+                        settings.complete.call($that);
+                        var value;
+                        while(value = queue[template].pop()) {
+                            settings.complete.call(value.selection);
+                        }
+                    }
+                    if(queue[template].length > 0) {
+                        queue[template] = [];
                     }
                 } else {
                     templates[template] = $templateContainer;
-                    prepareTemplate($templateContainer, data);
+                    prepareTemplate.call($that, $templateContainer, data);
                     if (textStatus == "success" && typeof settings.success == "function") {
-                        settings.success();
+                        settings.success.call($that);
+                    }
+                    var value;
+                    while(value = queue[template].pop()) {
+                        prepareTemplate.call(value.selection, $templateContainer, value.data)
+                        if (textStatus == "success" && typeof settings.success == "function") {
+                            settings.success.call(value.selection);
+                        }
                     }
                 }
             });
         } else {
             var $templateContainer = $("<div/>");
             if ($template.is("script")) {
-                $template = $.parseHTML($template.html().trim());
+                $template = $.parseHTML($.trim($template.html()));
             }
             $templateContainer.html($template);
-            prepareTemplate($templateContainer, data);
+            prepareTemplate.call($that, $templateContainer, data);
             if (typeof settings.success == "function") {
                 settings.success();
             }
@@ -73,7 +97,7 @@
 
         function prepareTemplate(template, data) {
             bindData(template, data);
-            $that.each(function () {
+            $(this).each(function () {
                 $(this).html(template.html());
             });
             if (typeof settings.complete === "function") {
@@ -127,7 +151,7 @@
 
             function applyFormatters($elem, value, attr) {
                 var formatterTarget = $elem.attr("data-format-target");
-                if(formatterTarget == attr || (!formatterTarget && attr == "content")) {
+                if (formatterTarget == attr || (!formatterTarget && attr == "content")) {
                     var formatter = $elem.attr("data-format");
                     if (formatter && typeof formatters[formatter] === "function") {
                         var formatTemplate = $elem.attr("data-format-template");
@@ -135,7 +159,7 @@
                     }
                 }
                 return value;
-           }
+            }
         }
     };
 
