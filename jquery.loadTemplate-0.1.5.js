@@ -85,35 +85,29 @@
             var data = data || {};
 
             processElements("data-content", data, function ($elem, value) {
-                var formatter = $elem.attr("data-format");
-                if (formatter && typeof formatters[formatter] === "function") {
-                    var formatTemplate = $elem.attr("data-format-template");
-                    $elem.html(formatters[formatter](value, formatTemplate));
-                } else {
-                    $elem.html(value);
-                }
+                $elem.html(applyFormatters($elem, value, "content"));
             });
 
             processElements("data-src", data, function ($elem, value) {
-                $elem.attr("src", value);
+                $elem.attr("src", applyFormatters($elem, value, "src"));
             }, function ($elem) {
                 $elem.remove();
             });
 
             processElements("data-alt", data, function ($elem, value) {
-                $elem.attr("alt", value);
+                $elem.attr("alt", applyFormatters($elem, value, "alt"));
             });
 
             processElements("data-link", data, function ($elem, value) {
                 var $linkElem = $("<a/>");
-                $linkElem.attr("href", value);
+                $linkElem.attr("href", applyFormatters($elem, value, "link"));
                 $linkElem.html($elem.html());
                 $elem.html($linkElem);
             });
 
             processElements("data-link-wrap", data, function ($elem, value) {
                 var $linkElem = $("<a/>");
-                $linkElem.attr("href", value);
+                $linkElem.attr("href", applyFormatters($elem, value, "link-wrap"));
                 $elem.wrap($linkElem);
             });
 
@@ -130,6 +124,18 @@
                 });
                 return;
             }
+
+            function applyFormatters($elem, value, attr) {
+                var formatterTarget = $elem.attr("data-format-target");
+                if(formatterTarget == attr || (!formatterTarget && attr == "content")) {
+                    var formatter = $elem.attr("data-format");
+                    if (formatter && typeof formatters[formatter] === "function") {
+                        var formatTemplate = $elem.attr("data-format-template");
+                        return formatters[formatter](value, formatTemplate);
+                    }
+                }
+                return value;
+           }
         }
     };
 

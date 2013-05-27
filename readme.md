@@ -33,7 +33,7 @@ Similarly the content of the template could be held in a separate html file with
             post: 'This is the contents of my post'
         });
 
-It is also possible to define data formatters. These are assigned through the `$.addTemplateFormatter` method. This function either accepts a map of functions and the keys that they will be referenced by, or a single function with a single key as two separate parameters. Each formatter takes two values, the value being assigned to the content, and a template to use to define how this data is displayed. The data-format-template may be empty. Example usage of this is below:
+It is also possible to define data formatters. These are assigned through the `$.addTemplateFormatter` method. This function either accepts a map of functions and the keys that they will be referenced by, or a single function with a single key as two separate parameters. Each formatter takes two values, the value being assigned, and a template to use to define how this data is displayed. The data-format-template may be empty. Example usage of this is below:
 
     $.addTemplateFormatter("UpperCaseFormatter",
         function(value, template) {
@@ -63,7 +63,7 @@ To call these templates, simply the following will work:
 	<div data-content="post" data-template="SameCaseFormatter"
 		data-template-format="upper"></div>
 
-Formatters must be added before they are used else a template will not be able to access them. Formatters are used at the time of populating the data.
+Formatters must be added before they are used else a template will not be able to access them. Formatters are used at the time of populating the data. You can also target any binding with the "data-format-target". The value of this is the binding to target so to target data-alt binding, set 'data-format-target="alt"'.
 
 There are a number of options the plugin accepts. These are:
 
