@@ -2,7 +2,7 @@
 	<head>
 		<title>Example of Template Loading</title>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script src="../jquery.loadTemplate-0.2.0.js"></script>
+		<script src="../jquery.loadTemplate-0.2.1.js"></script>
 	</head>
 	<body>
         <style>
@@ -41,7 +41,7 @@
         <h1>Example Usage of jQuery.loadTemplate</h1>
         <h2>Example of loading an html template from the application</h2>
 		<div class="simple-template-container"></div>
-        <div class="simple-template-container"></div>
+        <div class="simple-template-container-single"></div>
         <h2>Example of loading a template from a script tag within the same document.</h2>
         <div class="script-template-container"></div>
         <div class="script-template-container"></div>
@@ -64,6 +64,16 @@
                         post: 'This is the contents of my post'
                     }
 
+                    var posts = [
+                        post,
+                        {
+                            author: 'Joe Bloggs 2',
+                            date: '28th May 2013',
+                            authorPicture: 'img/joeBloggs.gif',
+                            post: 'This is the contents of my other post'
+                        }
+                    ]
+
                 $.addTemplateFormatter({
                     upperCaseFormatter : function(value, template) {
                             return value.toUpperCase();
@@ -82,7 +92,11 @@
 
                 // Load template from our templates folder,
                 // and populate the data from the post object.
-				$(".simple-template-container").loadTemplate("Templates/simple.html", post);
+				$(".simple-template-container").loadTemplate("Templates/simple.html", posts);
+
+                // Load template from our templates folder,
+                // and populate the data from the post object.
+				$(".simple-template-container-single").loadTemplate("Templates/simple.html", post);
 
                 // Load template from element on same page,
                 // and populate the data from the post object.
