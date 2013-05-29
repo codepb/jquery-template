@@ -166,6 +166,8 @@
                 $elem.wrap($linkElem);
             });
 
+            processAllElements(data);
+
             function processElements(attribute, data, dataBindFunction, noDataFunction) {
                 $("[" + attribute + "]", template).each(function (key, val) {
                     var param = $(val).attr(attribute);
@@ -178,6 +180,29 @@
                     }
                 });
                 return;
+            }
+
+            function processAllElements(data) {
+                $("[data-template-bind]", template).each(function (key, val) {
+                    var param = $.parseJSON($(val).attr("data-template-bind"));
+                    $(val).removeAttr("data-template-bind");
+                    
+                    $(param).each(function(){
+                       var value = data[this.value];
+                       if(value && this.attribute) {
+                           if(this.formatter && formatters[this.formatter])
+                           {
+                               value = formatters[this.formatter](value, this.formatTemplate);
+                           }
+                           if(this.attribute === "content") {
+                               $(val).html(value);
+                           } else {
+                               $(val).attr(this.attribute, value);
+                           }
+                       }
+                    });
+                    
+                });
             }
 
             function applyFormatters($elem, value, attr) {
