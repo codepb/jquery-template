@@ -173,14 +173,24 @@
                 $("[" + attribute + "]", template).each(function (key, val) {
                     var param = $(val).attr(attribute);
                     $(val).removeAttr(attribute);
-
-                    if (data[param] && dataBindFunction) {
-                        dataBindFunction($(val), data[param]);
+                    var value = getValue(data, param);
+                    if (value && dataBindFunction) {
+                        dataBindFunction($(val), value);
                     } else if (noDataFunction) {
                         noDataFunction($(val));
                     }
                 });
                 return;
+            }
+
+            function getValue(data, param) {
+                var paramParts = param.split('.');
+                var part;
+                var value = data;
+                while((part = paramParts.shift()) && value) {
+                    var value = value[part];
+                }
+                return value;
             }
 
             function processAllElements(data) {
@@ -189,7 +199,7 @@
                     $(val).removeAttr("data-template-bind");
                     
                     $(param).each(function(){
-                       var value = data[this.value];
+                       var value = getValue(data, this.value);
                        if(value && this.attribute) {
                            if(this.formatter && formatters[this.formatter])
                            {

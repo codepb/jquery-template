@@ -5,27 +5,47 @@
         <meta charset="utf-8" />
         <title>Search Example</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script src="../../jquery.loadTemplate-0.3.1.js"></script>
+		<script src="../../jquery.loadTemplate-0.4.0.js"></script>
     </head>
     <body>
         <style>
             #ResultsDisplay {
-                width:  400px;
-                margin: 0 auto;
-            }
-            #ResultsDisplay .searchResult {
-                border: 1px solid #ccc;
+                width:  600px;
+                display: none;
             }
             
-            #ResultsDisplay .searchResult div {
-                display: inline-block;
+            #ResultsDisplay thead {
+                background-color: #004b7c;
+                color: #fff;
             }
+
+            #ResultsDisplay thead td {
+                text-align: center;
+                padding: 5px;
+            }
+            
+            #ResultsDisplay tr:nth-child(even) {
+                background-color: #c6dfff;
+            }
+            
             #ResultsPaging {
                 display: none;
             }
         </style>
         <button id="PerformSearch">Search</button>
-        <div id="ResultsDisplay"></div>
+        <table id="ResultsDisplay">
+            <thead>
+                <tr>
+                    <td>id</td>
+                    <td>name</td>
+                    <td>price</td>
+                    <td>tags</td>
+                    <td>coordinates</td>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
         <div id="ResultsPaging">
             <button data-action="prev">Previous</button>
             <button data-action="next">Next</button>
@@ -46,7 +66,14 @@
                     },
                     tags: function (value, template) {
                         return value.join(", ");
+                    },
+                    coordinates: function (value) {
+                        return value.latitude + ", " + value.longitude;
+                    },
+                    productLink: function (value) {
+                        return "Products/" + value;
                     }
+
                 });
                 $("#PerformSearch").click(function () {
                     $.get("Services/searchResults.txt", function (response) {
@@ -64,7 +91,7 @@
                 });
 
                 function displayPage(pageNo) {
-                    $("#ResultsDisplay").loadTemplate("Templates/SearchResult.html", data.slice(((pageNo - 1) * resultsPerPage), ((pageNo) * resultsPerPage)));
+                    $("#ResultsDisplay tbody").loadTemplate("Templates/SearchResult.html", data.slice(((pageNo - 1) * resultsPerPage), ((pageNo) * resultsPerPage)));
                     page = pageNo;
                     if (page * resultsPerPage > data.length) {
                         $("[data-action='next']").attr('disabled', 'disabled');
@@ -76,6 +103,7 @@
                     } else {
                         $("[data-action='prev']").removeAttr('disabled');
                     }
+                    $("#ResultsDisplay").show();
                     $("#ResultsPaging").show();
                 }
             });
