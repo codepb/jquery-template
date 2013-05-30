@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Search Example</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="../../jquery.loadTemplate-0.3.1.js"></script>
+    </head>
+    <body>
+        <style>
+            #ResultsDisplay {
+                width:  400px;
+                margin: 0 auto;
+            }
+            #ResultsDisplay .searchResult {
+                border: 1px solid #ccc;
+            }
+            
+            #ResultsDisplay .searchResult div {
+                display: inline-block;
+            }
+            #ResultsPaging {
+                display: none;
+            }
+        </style>
+        <button id="PerformSearch">Search</button>
+        <div id="ResultsDisplay"></div>
+        <div id="ResultsPaging">
+            <button data-action="prev">Previous</button>
+            <button data-action="next">Next</button>
+        </div>
+        <script>
+            $(function () {
+                var page = 1;
+                var resultsPerPage = 10;
+                var data = [];
+                $.addTemplateFormatter({
+                    currency: function (value, template) {
+                        switch (template) {
+                            case "en":
+                                return "&pound;" + value;
+                            default:
+                                return value;
+                        }
+                    },
+                    tags: function (value, template) {
+                        return value.join(", ");
+                    }
+                });
+                $("#PerformSearch").click(function () {
+                    $.get("Services/searchResults.txt", function (response) {
+                        data = response
+                        displayPage(1);
+                    }, "json");
+                });
+
+                $("[data-action='next']").click(function () {
+                    displayPage(page + 1);
+                });
+
+                $("[data-action='prev']").click(function () {
+                    displayPage(page - 1);
+                });
+
+                function displayPage(pageNo) {
+                    $("#ResultsDisplay").loadTemplate("Templates/SearchResult.html", data.slice(((pageNo - 1) * resultsPerPage), ((pageNo) * resultsPerPage)));
+                    page = pageNo;
+                    if (page * resultsPerPage > data.length) {
+                        $("[data-action='next']").attr('disabled', 'disabled');
+                    } else {
+                        $("[data-action='next']").removeAttr('disabled');
+                    }
+                    if (page <= 1) {
+                        $("[data-action='prev']").attr('disabled', 'disabled');
+                    } else {
+                        $("[data-action='prev']").removeAttr('disabled');
+                    }
+                    $("#ResultsPaging").show();
+                }
+            });
+		</script> 
+    </body>
+</html>

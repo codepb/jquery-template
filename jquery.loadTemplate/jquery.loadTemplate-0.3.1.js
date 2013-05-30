@@ -12,6 +12,7 @@
     function loadTemplate(template, data, options) {
         var $that = this;
         if($.type(data) === "array") {
+            this.html("");
             var todo = data.length;
             var done = 0;
             options = options || {};
@@ -20,7 +21,7 @@
                 options,
                 {
                     complete: function() {
-                        $that.append(this);
+                        $that.append(this.html());
                         done++;
                         if(done == todo) {
                             if(options && typeof options.complete == "function") {
@@ -61,7 +62,7 @@
         var isFile = settings.isFile || (typeof settings.isFile === "undefined" && (!$template || $template.length == 0));
 
         if (isFile && !settings.overwriteCache && templates[template]) {
-            $templateContainer = templates[template];
+            $templateContainer = templates[template].clone();
             prepareTemplate.call($that, $templateContainer, data, settings.complete);
             if (typeof settings.success == "function") {
                 settings.success();

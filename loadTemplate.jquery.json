@@ -6,7 +6,7 @@
         "templates",
         "templating"
     ],
-    "version": "0.3.0",
+    "version": "0.3.1",
     "author": {
         "name": "Paul Burgess and other contributors",
         "url": "https://github.com/codepb/jquery-template"
@@ -19,7 +19,7 @@
     ],
     "bugs": "https://github.com/codepb/jquery-template/issues",
     "homepage": "https://github.com/codepb/jquery-template",
-    "docs": "https://github.com/codepb/jquery-template",
+    "docs": "https://github.com/codepb/jquery-template#jqueryloadtemplate",
     "dependencies": {
         "jquery": ">=1.8"
     }

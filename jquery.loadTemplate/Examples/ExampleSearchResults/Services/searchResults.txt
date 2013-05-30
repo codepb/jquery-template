@@ -1,0 +1,287 @@
+[
+    {
+        "id": 2,
+        "name": "An ice sculpture",
+        "price": 12.50,
+        "tags": ["cold", "ice", "sculpture"],
+        "dimensions": {
+            "length": 7.0,
+            "width": 12.0,
+            "height": 9.5
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    },
+    {
+        "id": 3,
+        "name": "A blue mouse",
+        "price": 25.50,
+        "tags": ["blue", "mouse"],
+        "dimensions": {
+            "length": 3.1,
+            "width": 1.0,
+            "height": 1.0
+        },
+        "warehouseLocation": {
+            "latitude": 54.4,
+            "longitude": -32.7
+        }
+    },
+    {
+        "id": 4,
+        "name": "A house",
+        "price": 250000.50,
+        "tags": ["house", "accommodation"],
+        "dimensions": {
+            "length": 30.1,
+            "width": 21.0,
+            "height": 7.0
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    },
+    {
+        "id": 5,
+        "name": "A purple lawnmower",
+        "price": 45.50,
+        "tags": ["purple", "lawnmower"],
+        "dimensions": {
+            "length": 4.1,
+            "width": 2.0,
+            "height": 2.0
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    },
+    {
+        "id": 6,
+        "name": "A green mouse",
+        "price": 25.50,
+        "tags": ["green", "mouse"],
+        "dimensions": {
+            "length": 3.1,
+            "width": 1.0,
+            "height": 1.0
+        },
+        "warehouseLocation": {
+            "latitude": 54.4,
+            "longitude": -32.7
+        }
+    },
+    {
+        "id": 7,
+        "name": "A yellow mouse",
+        "price": 25.50,
+        "tags": ["yellow", "mouse"],
+        "dimensions": {
+            "length": 3.1,
+            "width": 1.0,
+            "height": 1.0
+        },
+        "warehouseLocation": {
+            "latitude": 54.4,
+            "longitude": -32.7
+        }
+    },
+    {
+        "id": 8,
+        "name": "A white mouse",
+        "price": 25.50,
+        "tags": ["white", "mouse"],
+        "dimensions": {
+            "length": 3.1,
+            "width": 1.0,
+            "height": 1.0
+        },
+        "warehouseLocation": {
+            "latitude": 54.4,
+            "longitude": -32.7
+        }
+    },
+    {
+        "id": 9,
+        "name": "A black mouse",
+        "price": 30.50,
+        "tags": ["black", "mouse"],
+        "dimensions": {
+            "length": 3.1,
+            "width": 1.0,
+            "height": 1.0
+        },
+        "warehouseLocation": {
+            "latitude": 54.4,
+            "longitude": -32.7
+        }
+    },
+    {
+        "id": 10,
+        "name": "A red mouse",
+        "price": 30.50,
+        "tags": ["red", "mouse"],
+        "dimensions": {
+            "length": 3.1,
+            "width": 1.0,
+            "height": 1.0
+        },
+        "warehouseLocation": {
+            "latitude": 54.4,
+            "longitude": -32.7
+        }
+    },
+    {
+        "id": 11,
+        "name": "An orange mouse",
+        "price": 25.50,
+        "tags": ["orange", "mouse"],
+        "dimensions": {
+            "length": 3.1,
+            "width": 1.0,
+            "height": 1.0
+        },
+        "warehouseLocation": {
+            "latitude": 54.4,
+            "longitude": -32.7
+        }
+    },
+    {
+        "id": 12,
+        "name": "A stone sculpture",
+        "price": 12.50,
+        "tags": ["stone", "sculpture"],
+        "dimensions": {
+            "length": 7.0,
+            "width": 12.0,
+            "height": 9.5
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    },
+    {
+        "id": 13,
+        "name": "A wood sculpture",
+        "price": 12.50,
+        "tags": ["wood", "sculpture", "flammable"],
+        "dimensions": {
+            "length": 7.0,
+            "width": 12.0,
+            "height": 9.5
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    },
+    {
+        "id": 14,
+        "name": "An iron sculpture",
+        "price": 12.50,
+        "tags": ["iron", "sculpture"],
+        "dimensions": {
+            "length": 7.0,
+            "width": 12.0,
+            "height": 9.5
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    },
+    {
+        "id": 15,
+        "name": "A steel sculpture",
+        "price": 12.50,
+        "tags": ["steel", "sculpture"],
+        "dimensions": {
+            "length": 7.0,
+            "width": 12.0,
+            "height": 9.5
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    },
+    {
+        "id": 16,
+        "name": "A paper sculpture",
+        "price": 12.50,
+        "tags": ["paper", "sculpture"],
+        "dimensions": {
+            "length": 7.0,
+            "width": 12.0,
+            "height": 9.5
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    },
+    {
+        "id": 17,
+        "name": "A flat",
+        "price": 120000.50,
+        "tags": ["flat", "accommodation"],
+        "dimensions": {
+            "length": 30.1,
+            "width": 21.0,
+            "height": 3.0
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    },
+    {
+        "id": 18,
+        "name": "A bungalow",
+        "price": 160000.50,
+        "tags": ["bungalow", "accommodation"],
+        "dimensions": {
+            "length": 30.1,
+            "width": 21.0,
+            "height": 3.0
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    },
+    {
+        "id": 19,
+        "name": "A yellow lawnmower",
+        "price": 45.50,
+        "tags": ["yellow", "lawnmower"],
+        "dimensions": {
+            "length": 4.1,
+            "width": 2.0,
+            "height": 2.0
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    },
+    {
+        "id": 20,
+        "name": "A red lawnmower",
+        "price": 45.50,
+        "tags": ["red", "lawnmower"],
+        "dimensions": {
+            "length": 4.1,
+            "width": 2.0,
+            "height": 2.0
+        },
+        "warehouseLocation": {
+            "latitude": -78.75,
+            "longitude": 20.4
+        }
+    }
+]
