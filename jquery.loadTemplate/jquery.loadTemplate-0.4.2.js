@@ -5,10 +5,6 @@
 
     function loadTemplate(template, data, options) {
         var $that = this;
-        
-        if($.type(data) === "array") {
-            return processArray.call(this, template, data, options);
-        }
 
         var settings = $.extend({
             // These are the defaults.
@@ -20,8 +16,15 @@
                     $(this).html(settings.errorMessage);
                 });
             },
-            errorMessage: "There was an error loading the template."
+            errorMessage: "There was an error loading the template.",
+            paged: false,
+            pageNo: 1,
+            elemPerPage: 10
         }, options);
+        
+        if($.type(data) === "array") {
+            return processArray.call(this, template, data, settings);
+        }        
 
         if (!containsSlashes(template)) {
             var $template = $(template);
@@ -59,6 +62,11 @@
         var todo = data.length;
         var done = 0;
         options = options || {};
+
+        if(options.paged) {
+            var startNo = (options.pageNo - 1) * options.elemPerPage;
+            data = data.slice(startNo, startNo + options.elemPerPage);
+        }
 
         var newOptions = $.extend(
             {},
@@ -147,7 +155,7 @@
             settings.complete.call($that);
             var value;
         }
-        while(value = queue[template].shift()) {
+        while(queue[template] && (value = queue[template].shift())) {
             if(typeof value.settings.complete === "function") {
                 value.settings.complete.call(value.selection);
             }
@@ -164,7 +172,7 @@
             settings.success.call($that);
         }
         var value;
-        while(value = queue[template].shift()) {
+        while(queue[template] && (value = queue[template].shift())) {
             prepareTemplate.call(value.selection, templates[template].clone(), value.data, value.settings.complete)
             if (typeof value.settings.success == "function") {
                 value.settings.success.call(value.selection);

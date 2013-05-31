@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <title>Search Example</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script src="../../jquery.loadTemplate-0.4.1.js"></script>
+		<script src="../../jquery.loadTemplate-0.4.2.js"></script>
     </head>
     <body>
         <style>
@@ -91,7 +91,7 @@
                 });
 
                 function displayPage(pageNo) {
-                    $("#ResultsDisplay tbody").loadTemplate("Templates/SearchResult.html", data.slice(((pageNo - 1) * resultsPerPage), ((pageNo) * resultsPerPage)));
+                    $("#ResultsDisplay tbody").loadTemplate("Templates/SearchResult.html", data, {paged: true, pageNo: pageNo, elemPerPage: resultsPerPage});
                     page = pageNo;
                     if (page * resultsPerPage > data.length) {
                         $("[data-action='next']").attr('disabled', 'disabled');
