@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Examples</title>
+        <link rel="stylesheet" type="text/css" href="css/default.css"/>
+        <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+        <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="../jquery.loadTemplate-0.4.2.js"></script>
+    </head>
+    <body>
+        <div class="head row">
+            <h1>Examples of jQuery.loadTemplate</h1>
+        </div>
+        
+        <div class="body row">
+            <div class="nav">
+                <p>Click on the links below to see examples of jQuery.loadTemplate</p>
+                <ul>
+                    <li><a href="SimpleExample/example.html">Basic Example</a></li>
+                    <li><a href="ExampleSearchResults/search.html">Simple Search Example</a></li>
+                </ul>
+            </div>
+            <div class="contentContainer">
+                <div class="contentHead">
+                    <h3>Display</h3>
+                </div>
+                <div class="content"></div>
+            </div>
+
+            <div class="codeContainer">
+                <div class="contentHead">
+                    <h3>Code</h3>
+                </div>
+                <pre>
+                    <code class="xml">
+                    </code>
+                </pre>
+            </div>
+        </div>
+        <script>
+            $("a").click(function (e) {
+                e.preventDefault();
+
+                var $div = $("<div/>");
+                $($div).load($(this).attr("href"), function () {
+                    $(".contentContainer div.content").html($div.html());
+                    $(".codeContainer pre code").text($div.html());
+                    $(".codeContainer pre code").each(function () {
+                        hljs.highlightBlock(this);
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -1,109 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-        <meta charset="utf-8" />
-		<title>Example of Template Loading</title>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script src="../../jquery.loadTemplate-0.4.2.js"></script>
-	</head>
-	<body>
-        <style>
-            * {
-                color:  #333;
-                font-family: Helvetica, arial, freesans, clean, sans-serif;
+<h1>Example Usage of jQuery.loadTemplate</h1>
+<h2>Example of loading an html template from the application</h2>
+<div class="simple-template-container"></div>
+<div class="simple-template-container-single"></div>
+<h2>Example of loading a template from a script tag within the same document.</h2>
+<div class="script-template-container"></div>
+<div class="script-template-container"></div>
+<script type="text/html" id="template">
+    <img data-src="authorPicture" data-alt="author" data-link-wrap="authorPicture"/>
+    <div class="post-container">
+        <div data-content="author"></div>
+        <div data-content="date"></div>
+        <div data-content="post" data-format="sameCaseFormatter" data-format-template="upper"></div>
+    </div>
+</script>
+
+<script type="text/javascript">
+	$(function() {
+        // Set our data for the post
+        var post = {
+                author: 'Joe Bloggs',
+                date: '25th May 2013',
+                authorPicture: '/jquery.loadTemplate/Examples/SimpleExample/img/joeBloggs.gif',
+                post: 'This is the contents of my post'
             }
-            
-            .simple-template-container {
-                width: 400px;
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin:  10px;
-            }
-            
-            .simple-template-container img {
-                display: inline-block;
-            }
-            
-            .simple-template-container .post-container {
-                display: inline-block;
-                width: 240px;
-                margin-left: 10px;
-                vertical-align: top;
-            }
-            
-            .script-template-container {
-                width: 140px;
-                border: 1px dashed #ccc;
-                padding: 10px;
-                margin: 10px;
-                display: inline-block;
-            }
-            
-        </style>
-        <h1>Example Usage of jQuery.loadTemplate</h1>
-        <h2>Example of loading an html template from the application</h2>
-		<div class="simple-template-container"></div>
-        <div class="simple-template-container-single"></div>
-        <h2>Example of loading a template from a script tag within the same document.</h2>
-        <div class="script-template-container"></div>
-        <div class="script-template-container"></div>
-        <script type="text/html" id="template">
-            <img data-src="authorPicture" data-alt="author" data-link-wrap="authorPicture"/>
-            <div class="post-container">
-                <div data-content="author"></div>
-                <div data-content="date"></div>
-                <div data-content="post" data-format="sameCaseFormatter" data-format-template="upper"></div>
-            </div>
-        </script>
 
-		<script>
-			$(function() {
-                // Set our data for the post
-                var post = {
-                        author: 'Joe Bloggs',
-                        date: '25th May 2013',
-                        authorPicture: 'img/joeBloggs.gif',
-                        post: 'This is the contents of my post'
-                    }
+            var posts = [
+                post,
+                {
+                    author: 'Joe Bloggs 2',
+                    date: '28th May 2013',
+                    authorPicture: '/jquery.loadTemplate/Examples/SimpleExample/img/joeBloggs.gif',
+                    post: 'This is the contents of my other post'
+                }
+            ]
 
-                    var posts = [
-                        post,
-                        {
-                            author: 'Joe Bloggs 2',
-                            date: '28th May 2013',
-                            authorPicture: 'img/joeBloggs.gif',
-                            post: 'This is the contents of my other post'
-                        }
-                    ]
+        $.addTemplateFormatter({
+            upperCaseFormatter : function(value, template) {
+                    return value.toUpperCase();
+                },
+            lowerCaseFormatter : function(value, template) {
+                    return value.toLowerCase();
+                },
+            sameCaseFormatter : function(value, template) {
+                    if(template == "upper") {
+					    return value.toUpperCase();
+				    } else {
+					    return value.toLowerCase();
+				    }
+                }
+        });
 
-                $.addTemplateFormatter({
-                    upperCaseFormatter : function(value, template) {
-                            return value.toUpperCase();
-                        },
-                    lowerCaseFormatter : function(value, template) {
-                            return value.toLowerCase();
-                        },
-                    sameCaseFormatter : function(value, template) {
-                            if(template == "upper") {
-					            return value.toUpperCase();
-				            } else {
-					            return value.toLowerCase();
-				            }
-                        }
-                });
+        // Load template from our templates folder,
+        // and populate the data from the post object.
+		$(".simple-template-container").loadTemplate("/jquery.loadTemplate/Examples/SimpleExample/Templates/simple.html", posts);
 
-                // Load template from our templates folder,
-                // and populate the data from the post object.
-				$(".simple-template-container").loadTemplate("Templates/simple.html", posts);
+        // Load template from our templates folder,
+        // and populate the data from the post object.
+		$(".simple-template-container-single").loadTemplate("/jquery.loadTemplate/Examples/SimpleExample/Templates/simple.html", post);
 
-                // Load template from our templates folder,
-                // and populate the data from the post object.
-				$(".simple-template-container-single").loadTemplate("Templates/simple.html", post);
-
-                // Load template from element on same page,
-                // and populate the data from the post object.
-                $(".script-template-container").loadTemplate("#template", post);
-			});
-		</script> 
-	</body>
-</html>
+        // Load template from element on same page,
+        // and populate the data from the post object.
+        $(".script-template-container").loadTemplate("#template", post);
+	});
+</script>

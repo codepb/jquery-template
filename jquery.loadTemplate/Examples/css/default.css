@@ -1,0 +1,102 @@
+body {
+    color:  #333;
+    font-family: Helvetica, arial, freesans, clean, sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+}
+.contentContainer p {
+    text-align: justify;
+}
+.nav {
+    width: 200px;
+    height: 100%;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 20px;
+}
+.contentContainer {
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    width: calc(50% - 125px);
+}
+.contentHead {
+    height: 30px;
+} 
+.contentContainer > div.content {
+    overflow: auto;
+    height: calc(100% - 30px);
+}
+.codeContainer {
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+    width: calc(50% - 125px);
+}
+.codeContainer > pre {
+    overflow: auto;
+    height: calc(100% - 30px);
+}
+.head  {
+    height: 100px;
+}
+.row {
+    position:  absolute;
+}
+.body {
+    top: 100px;
+    bottom: 20px;
+}
+
+
+/* Search Example */
+#ResultsDisplay {
+    width:  600px;
+    display: none;
+}
+            
+#ResultsDisplay thead {
+    background-color: #004b7c;
+    color: #fff;
+}
+
+#ResultsDisplay thead td {
+    text-align: center;
+    padding: 5px;
+}
+            
+#ResultsDisplay tr:nth-child(even) {
+    background-color: #c6dfff;
+}
+            
+#ResultsPaging {
+    display: none;
+}
+
+/* Simple Example */
+.simple-template-container {
+    width: 400px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin:  10px;
+}
+            
+.simple-template-container img {
+    display: inline-block;
+}
+            
+.simple-template-container .post-container {
+    display: inline-block;
+    width: 240px;
+    margin-left: 10px;
+    vertical-align: top;
+}
+            
+.script-template-container {
+    width: 140px;
+    border: 1px dashed #ccc;
+    padding: 10px;
+    margin: 10px;
+    display: inline-block;
+}
