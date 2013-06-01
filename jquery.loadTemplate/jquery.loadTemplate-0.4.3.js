@@ -210,7 +210,7 @@
             $elem.wrap($linkElem);
         });
 
-        processAllElements(data);
+        processAllElements(template, data);
     }
 
     function processElements(attribute, template, data, dataBindFunction, noDataFunction) {

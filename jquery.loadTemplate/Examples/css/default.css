@@ -1,12 +1,35 @@
 body {
-    color:  #333;
-    font-family: Helvetica, arial, freesans, clean, sans-serif;
+    color:  #555;
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
 }
 h1, h2, h3, h4, h5, h6 {
     text-align: center;
+    font-weight: normal;
+    margin: 0;
+}
+.contentContainer, .codeContainer {
+    display: none;
 }
 .contentContainer p {
     text-align: justify;
+}
+.contentContainer > div, .codeContainer > div {
+    margin: 0 3%;
+    height: 100%;
+    vertical-align: top;
+}
+
+.codeContainer pre {
+    white-space: pre;
+    word-wrap: normal;
+    margin: 0;
+    height: calc(100% - 30px);
+}
+
+.codeContainer code {
+    overflow: auto;
+    height: calc(100% - 1em);
 }
 .nav {
     width: 200px;
@@ -15,24 +38,12 @@ h1, h2, h3, h4, h5, h6 {
     vertical-align: top;
     margin-right: 20px;
 }
-.contentContainer {
-    display: inline-block;
-    height: 100%;
-    vertical-align: top;
-    width: calc(50% - 125px);
-}
 .contentHead {
     height: 30px;
 } 
-.contentContainer > div.content {
+.contentContainer div.content {
     overflow: auto;
     height: calc(100% - 30px);
-}
-.codeContainer {
-    display: inline-block;
-    vertical-align: top;
-    height: 100%;
-    width: calc(50% - 125px);
 }
 .codeContainer > pre {
     overflow: auto;
@@ -40,42 +51,42 @@ h1, h2, h3, h4, h5, h6 {
 }
 .head  {
     height: 100px;
+    width: 100%;
 }
 .row {
     position:  absolute;
 }
 .body {
     top: 100px;
-    bottom: 20px;
+    bottom: 60px;
+    width: 100%
+}
+
+.body > div {
+    height: 100%;
 }
 
 
 /* Search Example */
 #ResultsDisplay {
-    width:  600px;
+    width:  100%;
     display: none;
-}
-            
-#ResultsDisplay thead {
-    background-color: #004b7c;
-    color: #fff;
-}
-
-#ResultsDisplay thead td {
-    text-align: center;
-    padding: 5px;
-}
-            
-#ResultsDisplay tr:nth-child(even) {
-    background-color: #c6dfff;
 }
             
 #ResultsPaging {
     display: none;
 }
 
+#PerformSearch {
+    margin-bottom: 3px;
+}
+
+.nav-button {
+    margin-top: 3px;
+}
+
 /* Simple Example */
-.simple-template-container {
+.simple-template-container, .simple-template-container-single {
     width: 400px;
     border: 1px solid #ccc;
     padding: 10px;

@@ -10,23 +10,23 @@ function. Simply by passing in options to set paged to true, which page to displ
 number of elements per page, the function will only output the elements on that page. The 
 navigation of pages is entirely separate from the function (the next and previous buttons 
 are not provided).</p>
-<button id="PerformSearch">Search</button>
-<table id="ResultsDisplay">
+<button id="PerformSearch" class="pure-button pure-button-primary">Search</button>
+<table id="ResultsDisplay" class="pure-table pure-table-striped">
     <thead>
         <tr>
-            <td>id</td>
-            <td>name</td>
-            <td>price</td>
-            <td>tags</td>
-            <td>coordinates</td>
+            <th>id</th>
+            <th>name</th>
+            <th>price</th>
+            <th>tags</th>
+            <th>coordinates</th>
         </tr>
     </thead>
     <tbody>
     </tbody>
 </table>
 <div id="ResultsPaging">
-    <button data-action="prev">Previous</button>
-    <button data-action="next">Next</button>
+    <button data-action="prev" class="nav-button pure-button">Previous</button>
+    <button data-action="next" class="nav-button pure-button">Next</button>
 </div>
 <script type="text/javascript">
     $(function () {
