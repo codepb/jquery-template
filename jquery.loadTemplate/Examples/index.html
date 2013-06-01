@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <title>Examples</title>
         <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/pure-min.css">
-        <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+        <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/vs.min.css">
         <link rel="stylesheet" type="text/css" href="css/default.css"/>
         <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
         <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
@@ -81,8 +81,8 @@
 
                     var $div = $("<div/>");
                     $($div).load($(this).attr("href"), function () {
-                        $(".contentContainer").hide();
-                        $(".codeContainer").hide();
+                        $(".contentContainer > div").hide();
+                        $(".codeContainer > div").hide();
                         $(".contentContainer div.content").html($div.html());
                         $(".codeContainer pre code").text($div.html());
                         if(highlightSupported()) {
@@ -90,8 +90,8 @@
                                 hljs.highlightBlock(this);
                             });
                         }
-                        $(".contentContainer").css('display', 'inline-block');
-                        $(".codeContainer").css('display', 'inline-block');
+                        $(".contentContainer > div").show();
+                        $(".codeContainer > div").show();
                     });
                 });
             });
