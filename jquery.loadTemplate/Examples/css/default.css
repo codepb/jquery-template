@@ -11,6 +11,9 @@ h1, h2, h3, h4, h5, h6 {
 .contentContainer p {
     text-align: justify;
 }
+.contentContainer, .codeContainer {
+    height: 100%;
+}
 .contentContainer > div, .codeContainer > div {
     display: none;
     margin: 0 3%;
@@ -58,10 +61,6 @@ h1, h2, h3, h4, h5, h6 {
     top: 100px;
     bottom: 60px;
     width: 100%
-}
-
-.body > div {
-    height: 100%;
 }
 
 
