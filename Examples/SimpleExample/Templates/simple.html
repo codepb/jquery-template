@@ -1,0 +1,9 @@
+<img data-src="authorPicture" data-alt="author"/>
+<div class="post-container">
+    <div data-content="author"></div>
+    <div data-content="date"></div>
+    <div data-template-bind='[
+         {"attribute": "content", "value": "post"},
+         {"attribute": "data-date", "value": "date"},
+         {"attribute": "data-author", "value": "author", "formatter": "sameCaseFormatter", "formatTemplate": "upper"}]'></div>
+</div>

@@ -1,0 +1,88 @@
+<h2>Example of using jQuery.loadTemplate for improved search.</h2>
+<p>jQuery.loadTemplate can be used for easily displaying data sets. 
+The example below is an example of utilising this. When the search button is pressed,  
+data is fetched from the server in the form of a JSON object. Processing this data is done
+client side, and allows for great client experience, sending the minimal amount of data 
+from the server (just a single json object, and a template). Another benefit this brings 
+is we have all our data in an easy to manipulate javascript object on the client.</p>
+<p>The example below makes use of paging a javascript array with the jQuery.loadTemplate 
+function. Simply by passing in options to set paged to true, which page to display, and the 
+number of elements per page, the function will only output the elements on that page. The 
+navigation of pages is entirely separate from the function (the next and previous buttons 
+are not provided).</p>
+<button id="PerformSearch" class="pure-button pure-button-primary">Search</button>
+<table id="ResultsDisplay" class="pure-table pure-table-striped">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>price</th>
+            <th>tags</th>
+            <th>coordinates</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<div id="ResultsPaging">
+    <button data-action="prev" class="nav-button pure-button">Previous</button>
+    <button data-action="next" class="nav-button pure-button">Next</button>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var page = 1;
+        var resultsPerPage = 10;
+        var data = [];
+        $.addTemplateFormatter({
+            currency: function (value, template) {
+                switch (template) {
+                    case "en":
+                        return "&pound;" + value;
+                    default:
+                        return value;
+                }
+            },
+            tags: function (value, template) {
+                return value.join(", ");
+            },
+            coordinates: function (value) {
+                return value.latitude + ", " + value.longitude;
+            },
+            productLink: function (value) {
+                return "Products/" + value;
+            }
+
+        });
+        $("#PerformSearch").click(function () {
+            $.get("/jquery.loadTemplate/Examples/ExampleSearchResults/Services/searchResults.txt", function (response) {
+                data = response
+                displayPage(1);
+            }, "json");
+        });
+
+        $("[data-action='next']").click(function () {
+            displayPage(page + 1);
+        });
+
+        $("[data-action='prev']").click(function () {
+            displayPage(page - 1);
+        });
+
+        function displayPage(pageNo) {
+            $("#ResultsDisplay tbody").loadTemplate("/jquery.loadTemplate/Examples/ExampleSearchResults/Templates/SearchResult.html", data, {paged: true, pageNo: pageNo, elemPerPage: resultsPerPage});
+            page = pageNo;
+            if (page * resultsPerPage > data.length) {
+                $("[data-action='next']").attr('disabled', 'disabled');
+            } else {
+                $("[data-action='next']").removeAttr('disabled');
+            }
+            if (page <= 1) {
+                $("[data-action='prev']").attr('disabled', 'disabled');
+            } else {
+                $("[data-action='prev']").removeAttr('disabled');
+            }
+            $("#ResultsDisplay").show();
+            $("#ResultsPaging").show();
+        }
+    });
+</script>
