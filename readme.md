@@ -15,6 +15,8 @@ jQuery.LoadTemplate provides the following:
 
 Simply clone the repo. The only file required is the jquery.loadTemplate-version.js file in the jquery.loadTemplate folder. There is also a folder for examples in the same folder. Take a look at the index file in here for examples and the code to create the examples.
 
+To see examples of usage, visit the project page: [http://codepb.github.io/jquery-template/](http://codepb.github.io/jquery-template/)
+
 ## Potential Applications
 
 jQuery.loadTemplate was originally designed with a single page application for a blog in mind. The idea was to create templates for blog posts, post snippets, etc. This could then be called from the client when required, and cached. The post data was sent as a JSON object from the server, and processed into the templates using the plugin. This meant a very light load on the server, and a great user experience, with smooth page transitions, and JavaScript engines doing all the work.
