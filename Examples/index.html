@@ -22,8 +22,10 @@
                 <div class="pure-menu pure-menu-open">
                     <ul>
                         <li class="pure-menu-heading">Examples!</li>
-                        <li><a href="SimpleExample/example.html">Basic Example</a></li>
-                        <li><a href="ExampleSearchResults/search.html">Simple Search</a></li>
+                        <li><a href="SimpleExample/example.html" class="jsLink">Basic Example</a></li>
+                        <li><a href="ExampleSearchResults/search.html" class="jsLink">Simple Search</a></li>
+						<li class="pure-menu-separator"></li>
+						<li><a href="../index.html">Return to HomePage</a></li>
                     </ul>
                 </div>
             </div>
@@ -76,7 +78,7 @@
                     }
                     return true;
                 }
-                $("a").click(function (e) {
+                $("a.jsLink").click(function (e) {
                     e.preventDefault();
 
                     var $div = $("<div/>");
