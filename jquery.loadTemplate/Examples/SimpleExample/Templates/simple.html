@@ -2,8 +2,9 @@
 <div class="post-container">
     <div data-content="author"></div>
     <div data-content="date"></div>
+    <select data-options="options"></select>
     <div data-template-bind='[
          {"attribute": "content", "value": "post"},
          {"attribute": "data-date", "value": "date"},
-         {"attribute": "data-author", "value": "author", "formatter": "sameCaseFormatter", "formatTemplate": "upper"}]'></div>
+         {"attribute": "data-author", "value": "author", "formatter": "sameCaseFormatter", "formatOptions": "upper"}]'></div>
 </div>

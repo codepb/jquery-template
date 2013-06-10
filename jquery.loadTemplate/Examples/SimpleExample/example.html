@@ -15,7 +15,7 @@
     <div class="post-container">
         <div data-content="author"></div>
         <div data-content="date"></div>
-        <div data-content="post" data-format="sameCaseFormatter" data-format-template="upper"></div>
+        <div data-content="post" data-format="sameCaseFormatter" data-format-options="upper"></div>
     </div>
 </script>
 
@@ -26,6 +26,7 @@
                 author: 'Joe Bloggs',
                 date: '25th May 2013',
                 authorPicture: '/jquery.loadTemplate/Examples/SimpleExample/img/joeBloggs.gif',
+                options: ['test', 'test2'],
                 post: 'This is the contents of my post'
             }
 
@@ -35,6 +36,7 @@
                     author: 'Joe Bloggs 2',
                     date: '28th May 2013',
                     authorPicture: '/jquery.loadTemplate/Examples/SimpleExample/img/joeBloggs.gif',
+                    options: ['test3', 'test4', 'test5'],
                     post: 'This is the contents of my other post'
                 }
             ]

@@ -21,10 +21,10 @@
             pageNo: 1,
             elemPerPage: 10
         }, options);
-        
-        if($.type(data) === "array") {
+
+        if ($.type(data) === "array") {
             return processArray.call(this, template, data, settings);
-        }        
+        }
 
         if (!containsSlashes(template)) {
             var $template = $(template);
@@ -63,7 +63,7 @@
         var done = 0;
         options = options || {};
 
-        if(options.paged) {
+        if (options.paged) {
             var startNo = (options.pageNo - 1) * options.elemPerPage;
             data = data.slice(startNo, startNo + options.elemPerPage);
         }
@@ -72,11 +72,11 @@
             {},
             options,
             {
-                complete: function() {
+                complete: function () {
                     $that.append(this.html());
                     done++;
-                    if(done == todo) {
-                        if(options && typeof options.complete == "function") {
+                    if (done == todo) {
+                        if (options && typeof options.complete == "function") {
                             options.complete();
                         }
                     }
@@ -84,7 +84,7 @@
             }
         );
 
-        $(data).each(function(){
+        $(data).each(function () {
             var $div = $("<div/>");
             loadTemplate.call($div, template, this, newOptions);
         });
@@ -94,7 +94,7 @@
 
     function addToQueue(template, selection, data, settings) {
         if (queue[template]) {
-            queue[template].push({ data: data, selection: selection, settings: settings});
+            queue[template].push({ data: data, selection: selection, settings: settings });
         } else {
             queue[template] = [{ data: data, selection: selection, settings: settings}];
         }
@@ -147,7 +147,7 @@
             settings.error.call(selection);
         }
         $(queue[template]).each(function (key, value) {
-            if(typeof value.settings.error == "function") {
+            if (typeof value.settings.error == "function") {
                 value.settings.error.call(value.selection);
             }
         });
@@ -155,12 +155,12 @@
             settings.complete.call($that);
             var value;
         }
-        while(queue[template] && (value = queue[template].shift())) {
-            if(typeof value.settings.complete === "function") {
+        while (queue[template] && (value = queue[template].shift())) {
+            if (typeof value.settings.complete === "function") {
                 value.settings.complete.call(value.selection);
             }
         }
-        if(queue[template].length > 0) {
+        if (queue[template].length > 0) {
             queue[template] = [];
         }
     }
@@ -172,7 +172,7 @@
             settings.success.call($that);
         }
         var value;
-        while(queue[template] && (value = queue[template].shift())) {
+        while (queue[template] && (value = queue[template].shift())) {
             prepareTemplate.call(value.selection, templates[template].clone(), value.data, value.settings.complete)
             if (typeof value.settings.success == "function") {
                 value.settings.success.call(value.selection);
@@ -185,6 +185,14 @@
 
         processElements("data-content", template, data, function ($elem, value) {
             $elem.html(applyFormatters($elem, value, "content"));
+        });
+
+        processElements("data-content-append", template, data, function ($elem, value) {
+            $elem.append(applyFormatters($elem, value, "content"));
+        });
+
+        processElements("data-content-prepend", template, data, function ($elem, value) {
+            $elem.prepend(applyFormatters($elem, value, "content"));
         });
 
         processElements("data-src", template, data, function ($elem, value) {
@@ -210,11 +218,18 @@
             $elem.wrap($linkElem);
         });
 
+        processElements("data-options", template, data, function ($elem, value) {
+            $(value).each(function () {
+                $option = $("<option/>");
+                $option.attr('value', this).text(this).appendTo($elem);
+            });
+        });
+
         processAllElements(template, data);
     }
 
     function processElements(attribute, template, data, dataBindFunction, noDataFunction) {
-        $("[" + attribute + "]", template).each(function() {
+        $("[" + attribute + "]", template).each(function () {
             $this = $(this);
             var param = $this.attr(attribute);
             $this.removeAttr(attribute);
@@ -233,18 +248,31 @@
             $this = $(this);
             var param = $.parseJSON($this.attr("data-template-bind"));
             $this.removeAttr("data-template-bind");
-                    
-            $(param).each(function(){
+
+            $(param).each(function () {
                 var value = getValue(data, this.value);
-                if(value && this.attribute) {
-                    if(this.formatter && formatters[this.formatter])
-                    {
-                        value = formatters[this.formatter](value, this.formatTemplate);
+                if (typeof (value) != 'undefined' && this.attribute) {
+                    if (this.formatter && formatters[this.formatter]) {
+                        value = formatters[this.formatter](value, this.formatOptions);
                     }
-                    if(this.attribute === "content") {
-                        $this.html(value);
-                    } else {
-                        $this.attr(this.attribute, value);
+                    switch(this.attribute) {
+                        case "content":
+                            $this.html(value);
+                        break;
+                        case "contentAppend":
+                            $this.append(value);
+                        break;
+                        case "contentPrepend":
+                            $this.prepend(value);
+                        break;
+                        case "options":
+                            $(value).each(function () {
+                                $option = $("<option/>");
+                                $option.attr('value', this).text(this).appendTo($this);
+                            });
+                        break;
+                        default:
+                            $this.attr(this.attribute, value);
                     }
                 }
             });
@@ -255,7 +283,7 @@
         var paramParts = param.split('.');
         var part;
         var value = data;
-        while((part = paramParts.shift()) && value) {
+        while ((part = paramParts.shift()) && value) {
             var value = value[part];
         }
         return value;
@@ -266,8 +294,8 @@
         if (formatterTarget == attr || (!formatterTarget && attr == "content")) {
             var formatter = $elem.attr("data-format");
             if (formatter && typeof formatters[formatter] === "function") {
-                var formatTemplate = $elem.attr("data-format-template");
-                return formatters[formatter](value, formatTemplate);
+                var formatOptions = $elem.attr("data-format-options");
+                return formatters[formatter](value, formatOptions);
             }
         }
         return value;
