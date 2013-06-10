@@ -5,6 +5,7 @@
 
     function loadTemplate(template, data, options) {
         var $that = this;
+        data = data || {};
 
         var settings = $.extend({
             // These are the defaults.
@@ -255,22 +256,22 @@
                     if (this.formatter && formatters[this.formatter]) {
                         value = formatters[this.formatter](value, this.formatOptions);
                     }
-                    switch(this.attribute) {
+                    switch (this.attribute) {
                         case "content":
                             $this.html(value);
-                        break;
+                            break;
                         case "contentAppend":
                             $this.append(value);
-                        break;
+                            break;
                         case "contentPrepend":
                             $this.prepend(value);
-                        break;
+                            break;
                         case "options":
                             $(value).each(function () {
                                 $option = $("<option/>");
                                 $option.attr('value', this).text(this).appendTo($this);
                             });
-                        break;
+                            break;
                         default:
                             $this.attr(this.attribute, value);
                     }
