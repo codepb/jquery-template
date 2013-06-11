@@ -251,33 +251,43 @@
             $this.removeAttr("data-template-bind");
 
             $(param).each(function () {
-                var value = getValue(data, this.value);
+                if (typeof (this.value) == 'object') {
+                    var value = getValue(data, this.value.data)
+                } else {
+                    var value = getValue(data, this.value);
+                }
                 if (typeof (value) != 'undefined' && this.attribute) {
-                    if (this.formatter && formatters[this.formatter]) {
-                        value = formatters[this.formatter](value, this.formatOptions);
-                    }
+
                     switch (this.attribute) {
                         case "content":
-                            $this.html(value);
+                            $this.html(applyDataBindFormatters(value, this));
                             break;
                         case "contentAppend":
-                            $this.append(value);
+                            $this.append(applyDataBindFormatters(value, this));
                             break;
                         case "contentPrepend":
-                            $this.prepend(value);
+                            $this.prepend(applyDataBindFormatters(value, this));
                             break;
                         case "options":
+                            var optionsData = this;
                             $(value).each(function () {
                                 $option = $("<option/>");
-                                $option.attr('value', this).text(this).appendTo($this);
+                                $option.attr('value', this[optionsData.value.value]).text(applyDataBindFormatters(this[optionsData.value.content], optionsData)).appendTo($this);
                             });
                             break;
                         default:
-                            $this.attr(this.attribute, value);
+                            $this.attr(this.attribute, applyDataBindFormatters(value, this));
                     }
                 }
             });
         });
+    }
+
+    function applyDataBindFormatters(value, data) {
+        if (data.formatter && formatters[data.formatter]) {
+            return formatters[data.formatter](value, data.formatOptions);
+        }
+        return value;
     }
 
     function getValue(data, param) {
