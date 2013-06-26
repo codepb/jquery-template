@@ -2,10 +2,9 @@
     var templates = {};
     var queue = {};
     var formatters = {};
-    var $that;
 
     function loadTemplate(template, data, options) {
-        $that = this;
+        var $that = this;
         data = data || {};
 
         var settings = $.extend({
@@ -28,12 +27,11 @@
             return processArray.call(this, template, data, settings);
         }
 
-        var $template;
         if (!containsSlashes(template)) {
-            $template = $(template);
+            var $template = $(template);
         }
 
-        var isFile = settings.isFile || (typeof settings.isFile === "undefined" && $template.length === 0);
+        var isFile = settings.isFile || (typeof settings.isFile === "undefined" && (!$template || $template.length == 0));
 
         if (isFile && !settings.overwriteCache && templates[template]) {
             prepareTemplateFromCache(template, $that, data, settings);
@@ -45,7 +43,7 @@
             loadTemplateFromDocument($template, $that, data, settings);
         }
         return this;
-    }
+    };
 
     function addTemplateFormatter(key, formatter) {
         if (formatter) {
@@ -56,11 +54,11 @@
     }
 
     function containsSlashes(str) {
-        return typeof str === "string" && str.indexOf("/") > -1;
+        return typeof str == "string" && str.indexOf("/") > -1;
     }
 
     function processArray(template, data, options) {
-        $that = this;
+        var $that = this;
         $that.html("");
         var todo = data.length;
         var done = 0;
@@ -78,8 +76,8 @@
                 complete: function () {
                     $that.append(this.html());
                     done++;
-                    if (done === todo) {
-                        if (options && typeof options.complete === "function") {
+                    if (done == todo) {
+                        if (options && typeof options.complete == "function") {
                             options.complete();
                         }
                     }
@@ -104,9 +102,9 @@
     }
 
     function prepareTemplateFromCache(template, selection, data, settings) {
-        var $templateContainer = templates[template].clone();
+        $templateContainer = templates[template].clone();
         prepareTemplate.call(selection, $templateContainer, data, settings.complete);
-        if (typeof settings.success === "function") {
+        if (typeof settings.success == "function") {
             settings.success();
         }
     }
@@ -114,8 +112,8 @@
     function loadAndPrepareTemplate(template, selection, data, settings) {
         var $templateContainer = $("<div/>");
         templates[template] = null;
-        $templateContainer.load(template, function (responseText, textStatus) {
-            if (textStatus === "error") {
+        $templateContainer.load(template, function (responseText, textStatus, XMLHttpRequest) {
+            if (textStatus == "error") {
                 handleTemplateLoadingError(template, selection, data, settings);
             } else {
                 handleTemplateLoadingSuccess($templateContainer, template, selection, data, settings);
@@ -130,7 +128,7 @@
         }
         $templateContainer.html($template);
         prepareTemplate.call(selection, $templateContainer, data, settings.complete);
-        if (typeof settings.success === "function") {
+        if (typeof settings.success == "function") {
             settings.success();
         }
     }
@@ -146,20 +144,18 @@
     }
 
     function handleTemplateLoadingError(template, selection, data, settings) {
-        var value;
-
-        if (typeof settings.error === "function") {
+        if (typeof settings.error == "function") {
             settings.error.call(selection);
         }
         $(queue[template]).each(function (key, value) {
-            if (typeof value.settings.error === "function") {
+            if (typeof value.settings.error == "function") {
                 value.settings.error.call(value.selection);
             }
         });
         if (typeof settings.complete === "function") {
             settings.complete.call($that);
+            var value;
         }
-
         while (queue[template] && (value = queue[template].shift())) {
             if (typeof value.settings.complete === "function") {
                 value.settings.complete.call(value.selection);
@@ -173,20 +169,20 @@
     function handleTemplateLoadingSuccess($templateContainer, template, selection, data, settings) {
         templates[template] = $templateContainer.clone();
         prepareTemplate.call(selection, $templateContainer, data, settings.complete);
-        if (typeof settings.success === "function") {
+        if (typeof settings.success == "function") {
             settings.success.call($that);
         }
         var value;
         while (queue[template] && (value = queue[template].shift())) {
-            prepareTemplate.call(value.selection, templates[template].clone(), value.data, value.settings.complete);
-            if (typeof value.settings.success === "function") {
+            prepareTemplate.call(value.selection, templates[template].clone(), value.data, value.settings.complete)
+            if (typeof value.settings.success == "function") {
                 value.settings.success.call(value.selection);
             }
         }
     }
 
     function bindData(template, data) {
-        data = data || {};
+        var data = data || {};
 
         processElements("data-content", template, data, function ($elem, value) {
             $elem.html(applyFormatters($elem, value, "content"));
@@ -225,7 +221,7 @@
 
         processElements("data-options", template, data, function ($elem, value) {
             $(value).each(function () {
-                var $option = $("<option/>");
+                $option = $("<option/>");
                 $option.attr('value', this).text(this).appendTo($elem);
             });
         });
@@ -235,7 +231,7 @@
 
     function processElements(attribute, template, data, dataBindFunction, noDataFunction) {
         $("[" + attribute + "]", template).each(function () {
-            var $this = $(this);
+            $this = $(this);
             var param = $this.attr(attribute);
             $this.removeAttr(attribute);
             var value = getValue(data, param);
@@ -250,19 +246,17 @@
 
     function processAllElements(template, data) {
         $("[data-template-bind]", template).each(function () {
-            var $this = $(this);
+            $this = $(this);
             var param = $.parseJSON($this.attr("data-template-bind"));
             $this.removeAttr("data-template-bind");
 
             $(param).each(function () {
-                var value;
-
-                if (typeof (this.value) === 'object') {
-                    value = getValue(data, this.value.data);
+                if (typeof (this.value) == 'object') {
+                    var value = getValue(data, this.value.data)
                 } else {
-                    value = getValue(data, this.value);
+                    var value = getValue(data, this.value);
                 }
-                if (typeof (value) !== 'undefined' && this.attribute) {
+                if (typeof (value) != 'undefined' && this.attribute) {
 
                     switch (this.attribute) {
                         case "content":
@@ -277,7 +271,7 @@
                         case "options":
                             var optionsData = this;
                             $(value).each(function () {
-                                var $option = $("<option/>");
+                                $option = $("<option/>");
                                 $option.attr('value', this[optionsData.value.value]).text(applyDataBindFormatters(this[optionsData.value.content], optionsData)).appendTo($this);
                             });
                             break;
@@ -301,14 +295,14 @@
         var part;
         var value = data;
         while ((part = paramParts.shift()) && value) {
-            value = value[part];
+            var value = value[part];
         }
         return value;
     }
 
     function applyFormatters($elem, value, attr) {
         var formatterTarget = $elem.attr("data-format-target");
-        if (formatterTarget === attr || (!formatterTarget && attr === "content")) {
+        if (formatterTarget == attr || (!formatterTarget && attr == "content")) {
             var formatter = $elem.attr("data-format");
             if (formatter && typeof formatters[formatter] === "function") {
                 var formatOptions = $elem.attr("data-format-options");
