@@ -1,13 +1,18 @@
-(function ($, undefined) {
-    var templates = {};
-    var queue = {};
-    var formatters = {};
+(function ($) {
+    "use strict";
+    var templates = {},
+        queue = {},
+        formatters = {};
 
     function loadTemplate(template, data, options) {
-        var $that = this;
+        var $that = this,
+            $template,
+            settings,
+            isFile;
+
         data = data || {};
 
-        var settings = $.extend({
+        settings = $.extend({
             // These are the defaults.
             overwriteCache: false,
             complete: null,
@@ -28,10 +33,10 @@
         }
 
         if (!containsSlashes(template)) {
-            var $template = $(template);
+            $template = $(template);
         }
 
-        var isFile = settings.isFile || (typeof settings.isFile === "undefined" && (!$template || $template.length == 0));
+        isFile = settings.isFile || (typeof settings.isFile === "undefined" && (typeof $template === "undefined" || $template.length === 0));
 
         if (isFile && !settings.overwriteCache && templates[template]) {
             prepareTemplateFromCache(template, $that, data, settings);
@@ -43,7 +48,7 @@
             loadTemplateFromDocument($template, $that, data, settings);
         }
         return this;
-    };
+    }
 
     function addTemplateFormatter(key, formatter) {
         if (formatter) {
@@ -54,14 +59,15 @@
     }
 
     function containsSlashes(str) {
-        return typeof str == "string" && str.indexOf("/") > -1;
+        return typeof str === "string" && str.indexOf("/") > -1;
     }
 
     function processArray(template, data, options) {
-        var $that = this;
-        $that.html("");
-        var todo = data.length;
-        var done = 0;
+        var $that = this,
+            todo = data.length,
+            done = 0,
+            newOptions;
+
         options = options || {};
 
         if (options.paged) {
@@ -69,21 +75,23 @@
             data = data.slice(startNo, startNo + options.elemPerPage);
         }
 
-        var newOptions = $.extend(
+        newOptions = $.extend(
             {},
             options,
             {
                 complete: function () {
                     $that.append(this.html());
                     done++;
-                    if (done == todo) {
-                        if (options && typeof options.complete == "function") {
+                    if (done === todo) {
+                        if (options && typeof options.complete === "function") {
                             options.complete();
                         }
                     }
                 }
             }
         );
+
+        $that.html("");
 
         $(data).each(function () {
             var $div = $("<div/>");
@@ -102,18 +110,20 @@
     }
 
     function prepareTemplateFromCache(template, selection, data, settings) {
-        $templateContainer = templates[template].clone();
+        var $templateContainer = templates[template].clone();
+
         prepareTemplate.call(selection, $templateContainer, data, settings.complete);
-        if (typeof settings.success == "function") {
+        if (typeof settings.success === "function") {
             settings.success();
         }
     }
 
     function loadAndPrepareTemplate(template, selection, data, settings) {
         var $templateContainer = $("<div/>");
+
         templates[template] = null;
-        $templateContainer.load(template, function (responseText, textStatus, XMLHttpRequest) {
-            if (textStatus == "error") {
+        $templateContainer.load(template, function (responseText, textStatus) {
+            if (textStatus === "error") {
                 handleTemplateLoadingError(template, selection, data, settings);
             } else {
                 handleTemplateLoadingSuccess($templateContainer, template, selection, data, settings);
@@ -123,66 +133,79 @@
 
     function loadTemplateFromDocument($template, selection, data, settings) {
         var $templateContainer = $("<div/>");
+
         if ($template.is("script")) {
             $template = $.parseHTML($.trim($template.html()));
         }
+
         $templateContainer.html($template);
         prepareTemplate.call(selection, $templateContainer, data, settings.complete);
-        if (typeof settings.success == "function") {
+
+        if (typeof settings.success === "function") {
             settings.success();
         }
     }
 
     function prepareTemplate(template, data, complete) {
         bindData(template, data);
+
         $(this).each(function () {
             $(this).html(template.html());
         });
+
         if (typeof complete === "function") {
             complete.call($(this));
         }
     }
 
     function handleTemplateLoadingError(template, selection, data, settings) {
-        if (typeof settings.error == "function") {
+        var value;
+
+        if (typeof settings.error === "function") {
             settings.error.call(selection);
         }
+
         $(queue[template]).each(function (key, value) {
-            if (typeof value.settings.error == "function") {
+            if (typeof value.settings.error === "function") {
                 value.settings.error.call(value.selection);
             }
         });
+
         if (typeof settings.complete === "function") {
-            settings.complete.call($that);
-            var value;
+            settings.complete.call(selection);
         }
+
         while (queue[template] && (value = queue[template].shift())) {
             if (typeof value.settings.complete === "function") {
                 value.settings.complete.call(value.selection);
             }
         }
+
         if (queue[template].length > 0) {
             queue[template] = [];
         }
     }
 
     function handleTemplateLoadingSuccess($templateContainer, template, selection, data, settings) {
+        var value;
+
         templates[template] = $templateContainer.clone();
         prepareTemplate.call(selection, $templateContainer, data, settings.complete);
-        if (typeof settings.success == "function") {
-            settings.success.call($that);
+
+        if (typeof settings.success === "function") {
+            settings.success.call(selection);
         }
-        var value;
+
         while (queue[template] && (value = queue[template].shift())) {
-            prepareTemplate.call(value.selection, templates[template].clone(), value.data, value.settings.complete)
-            if (typeof value.settings.success == "function") {
+            prepareTemplate.call(value.selection, templates[template].clone(), value.data, value.settings.complete);
+            if (typeof value.settings.success === "function") {
                 value.settings.success.call(value.selection);
             }
         }
     }
 
     function bindData(template, data) {
-        var data = data || {};
+        data = data || {};
 
         processElements("data-content", template, data, function ($elem, value) {
             $elem.html(applyFormatters($elem, value, "content"));
@@ -221,7 +244,7 @@
 
         processElements("data-options", template, data, function ($elem, value) {
             $(value).each(function () {
-                $option = $("<option/>");
+                var $option = $("<option/>");
                 $option.attr('value', this).text(this).appendTo($elem);
             });
         });
@@ -231,10 +254,12 @@
 
     function processElements(attribute, template, data, dataBindFunction, noDataFunction) {
         $("[" + attribute + "]", template).each(function () {
-            $this = $(this);
-            var param = $this.attr(attribute);
+            var $this = $(this),
+                param = $this.attr(attribute),
+                value = getValue(data, param);
+
             $this.removeAttr(attribute);
-            var value = getValue(data, param);
+
             if (value && dataBindFunction) {
                 dataBindFunction($this, value);
             } else if (noDataFunction) {
@@ -246,18 +271,20 @@
 
     function processAllElements(template, data) {
         $("[data-template-bind]", template).each(function () {
-            $this = $(this);
-            var param = $.parseJSON($this.attr("data-template-bind"));
+            var $this = $(this),
+                param = $.parseJSON($this.attr("data-template-bind"));
+
             $this.removeAttr("data-template-bind");
 
             $(param).each(function () {
-                if (typeof (this.value) == 'object') {
-                    var value = getValue(data, this.value.data)
-                } else {
-                    var value = getValue(data, this.value);
-                }
-                if (typeof (value) != 'undefined' && this.attribute) {
+                var value;
 
+                if (typeof (this.value) === 'object') {
+                    value = getValue(data, this.value.data);
+                } else {
+                    value = getValue(data, this.value);
+                }
+                if (typeof value !== "undefined" && this.attribute) {
                     switch (this.attribute) {
                         case "content":
                             $this.html(applyDataBindFormatters(value, this));
@@ -271,7 +298,7 @@
                         case "options":
                             var optionsData = this;
                             $(value).each(function () {
-                                $option = $("<option/>");
+                                var $option = $("<option/>");
                                 $option.attr('value', this[optionsData.value.value]).text(applyDataBindFormatters(this[optionsData.value.content], optionsData)).appendTo($this);
                             });
                             break;
@@ -291,24 +318,29 @@
     }
 
     function getValue(data, param) {
-        var paramParts = param.split('.');
-        var part;
-        var value = data;
-        while ((part = paramParts.shift()) && value) {
-            var value = value[part];
+        var paramParts = param.split('.'),
+            part,
+            value = data;
+
+        while ((part = paramParts.shift()) && typeof value !== "undefined") {
+            value = value[part];
         }
+
         return value;
     }
 
     function applyFormatters($elem, value, attr) {
-        var formatterTarget = $elem.attr("data-format-target");
-        if (formatterTarget == attr || (!formatterTarget && attr == "content")) {
-            var formatter = $elem.attr("data-format");
+        var formatterTarget = $elem.attr("data-format-target"),
+            formatter;
+
+        if (formatterTarget === attr || (!formatterTarget && attr === "content")) {
+            formatter = $elem.attr("data-format");
             if (formatter && typeof formatters[formatter] === "function") {
                 var formatOptions = $elem.attr("data-format-options");
                 return formatters[formatter](value, formatOptions);
             }
         }
+
         return value;
     }
 
