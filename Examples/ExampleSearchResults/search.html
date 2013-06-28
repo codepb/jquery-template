@@ -54,7 +54,7 @@ are not provided).</p>
 
         });
         $("#PerformSearch").click(function () {
-            $.get("/jquery.loadTemplate/Examples/ExampleSearchResults/Services/searchResults.txt", function (response) {
+            $.get("/Examples/ExampleSearchResults/Services/searchResults.txt", function (response) {
                 data = response
                 displayPage(1);
             }, "json");
@@ -69,7 +69,7 @@ are not provided).</p>
         });
 
         function displayPage(pageNo) {
-            $("#ResultsDisplay tbody").loadTemplate("/jquery.loadTemplate/Examples/ExampleSearchResults/Templates/SearchResult.html", data, {paged: true, pageNo: pageNo, elemPerPage: resultsPerPage});
+            $("#ResultsDisplay tbody").loadTemplate("/Examples/ExampleSearchResults/Templates/SearchResult.html", data, {paged: true, pageNo: pageNo, elemPerPage: resultsPerPage});
             page = pageNo;
             if (page * resultsPerPage > data.length) {
                 $("[data-action='next']").attr('disabled', 'disabled');
