@@ -181,7 +181,7 @@
             }
         }
 
-        if (queue[template].length > 0) {
+        if (typeof queue[template] !== 'undefined' && queue[template].length > 0) {
             queue[template] = [];
         }
     }
