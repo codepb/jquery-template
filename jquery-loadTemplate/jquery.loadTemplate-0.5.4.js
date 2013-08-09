@@ -229,6 +229,10 @@
             $elem.attr("alt", applyFormatters($elem, value, "alt"));
         });
 
+        processElements("data-value", template, data, function ($elem, value) {
+            $elem.val(applyFormatters($elem, value, "value"));
+        });
+
         processElements("data-link", template, data, function ($elem, value) {
             var $linkElem = $("<a/>");
             $linkElem.attr("href", applyFormatters($elem, value, "link"));
