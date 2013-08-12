@@ -92,6 +92,34 @@ To call these formatters, simply the following will work:
 
 Formatters must be added before they are used else a template will not be able to access them. Formatters are used at the time of populating the data. You can also target any binding with the "data-format-target". The value of this is the binding to target so to target data-alt binding, set 'data-format-target="alt"'.
 
+### Bindings
+There are a number of different bindings and ways to bind the data. The following attributes are available:
+
+- "data-content" - binds the value supplied to the content of the element (uses $(elem).html(value))
+- "data-content-append" - appends the value to the end of the element (uses $(elem).append(value))
+- "data-content-prepend" - prepends the value to the beginning of the element (uses $(elem).prepend(value))
+- "data-alt" - sets the alt value of the element to the value provided (uses $(elem).attr("alt", value));
+- "data-value" - sets the value attribute of the element to the value provided (uses $(elem).val(value))
+- "data-link" - sets the innerHtml of the element to be a link to the value provided (wraps the content in an &lt;a&gt; tag).
+- "data-link-wrap" - wraps the element in a link to the value provided. Same as "data-link", but the &lt;a&gt; tag wraps the element as well as the content.
+- "data-options" - adds options to a select box. The value for this should reference an array of strings, each option will be output as a separate option. The value will be the same as the displayed text for each option. For a more powerful version of this look at the data-template-bind option.
+
+On top of the attributes above, there is also a "data-template-bind" attribute. This is designed to handle more complex situations and allows a wide range of control. The attribute takes a JSON string and allows multiple bindings and options to be set in the one attribute.
+
+The "data-template-bind" value should be an array of objects. Each object represents one complete binding. Each object can contain the following properties:
+
+- "value" (required) - The property representing the value to bind to.
+- "attribute" (required) - The attribute to bind to. This can be any attribute accepted by the jQuery.attr() method or one of the following: "content" - same as data-content, binds the innerHTML, "contentAppend" - same as data-append, appends the value, "contentPrepend" - same as data-prepend, prepends the value, "options" - same as data-options, but provides greater control. The value attribute for this is an object with a value property and a content property, and this will bind the value of the option to the value property, and the innerText of the option to the content property.
+- "formatter" (optional) - provides the formatter to apply to the specific binding. Multiple different attributes can use different formatters using this syntax.
+- "formatOptions" (optional) - the options to pass to the formatter applied.
+
+An example of using the "data-template-bind" attribute would be the following:
+
+    <div data-template-bind='[
+         {"attribute": "content", "value": "post"},
+         {"attribute": "data-date", "value": "date"},
+         {"attribute": "data-author", "value": "author", "formatter": "sameCaseFormatter", "formatOptions": "upper"}]'></div>
+
 ### Options
 
 There are a number of options the plugin accepts. These are:
