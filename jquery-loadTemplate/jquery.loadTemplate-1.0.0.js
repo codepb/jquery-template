@@ -25,7 +25,8 @@
             errorMessage: "There was an error loading the template.",
             paged: false,
             pageNo: 1,
-            elemPerPage: 10
+            elemPerPage: 10,
+            append: false
         }, options);
 
         if ($.type(data) === "array") {
@@ -62,36 +63,38 @@
         return typeof str === "string" && str.indexOf("/") > -1;
     }
 
-    function processArray(template, data, options) {
+    function processArray(template, data, settings) {
         var $that = this,
             todo = data.length,
             done = 0,
             newOptions;
 
-        options = options || {};
+        settings = settings || {};
 
-        if (options.paged) {
-            var startNo = (options.pageNo - 1) * options.elemPerPage;
-            data = data.slice(startNo, startNo + options.elemPerPage);
+        if (settings.paged) {
+            var startNo = (settings.pageNo - 1) * settings.elemPerPage;
+            data = data.slice(startNo, startNo + settings.elemPerPage);
         }
 
         newOptions = $.extend(
             {},
-            options,
+            settings,
             {
                 complete: function () {
                     $that.append(this.html());
                     done++;
                     if (done === todo) {
-                        if (options && typeof options.complete === "function") {
-                            options.complete();
+                        if (settings && typeof settings.complete === "function") {
+                            settings.complete();
                         }
                     }
                 }
             }
         );
 
-        $that.html("");
+        if (!settings.append) {
+            $that.html("");
+        }
 
         $(data).each(function () {
             var $div = $("<div/>");
@@ -139,22 +142,26 @@
         }
 
         $templateContainer.html($template);
-        prepareTemplate.call(selection, $templateContainer, data, settings.complete);
+        prepareTemplate.call(selection, $templateContainer, data, settings);
 
         if (typeof settings.success === "function") {
             settings.success();
         }
     }
 
-    function prepareTemplate(template, data, complete) {
+    function prepareTemplate(template, data, settings) {
         bindData(template, data);
 
         $(this).each(function () {
-            $(this).html(template.html());
+            if (settings.append) {
+                $(this).append(template.html());
+            } else {
+                $(this).html(template.html());
+            }
         });
 
-        if (typeof complete === "function") {
-            complete.call($(this));
+        if (typeof settings.complete === "function") {
+            settings.complete.call($(this));
         }
     }
 
