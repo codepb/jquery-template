@@ -115,7 +115,7 @@
     function prepareTemplateFromCache(template, selection, data, settings) {
         var $templateContainer = templates[template].clone();
 
-        prepareTemplate.call(selection, $templateContainer, data, settings.complete);
+        prepareTemplate.call(selection, $templateContainer, data, settings);
         if (typeof settings.success === "function") {
             settings.success();
         }
@@ -197,14 +197,14 @@
         var value;
 
         templates[template] = $templateContainer.clone();
-        prepareTemplate.call(selection, $templateContainer, data, settings.complete);
+        prepareTemplate.call(selection, $templateContainer, data, settings);
 
         if (typeof settings.success === "function") {
             settings.success.call(selection);
         }
 
         while (queue[template] && (value = queue[template].shift())) {
-            prepareTemplate.call(value.selection, templates[template].clone(), value.data, value.settings.complete);
+            prepareTemplate.call(value.selection, templates[template].clone(), value.data, value.settings);
             if (typeof value.settings.success === "function") {
                 value.settings.success.call(value.selection);
             }
