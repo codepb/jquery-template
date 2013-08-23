@@ -26,7 +26,8 @@
             paged: false,
             pageNo: 1,
             elemPerPage: 10,
-            append: false
+            append: false,
+            prepend: false
         }, options);
 
         if ($.type(data) === "array") {
@@ -92,7 +93,7 @@
             }
         );
 
-        if (!settings.append) {
+        if (!settings.append && !settings.prepend) {
             $that.html("");
         }
 
@@ -155,6 +156,8 @@
         $(this).each(function () {
             if (settings.append) {
                 $(this).append(template.html());
+            } else if(settings.prepend) {
+                $(this).prepend(template.html());
             } else {
                 $(this).html(template.html());
             }
