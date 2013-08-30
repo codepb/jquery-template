@@ -133,6 +133,10 @@ There are a number of options the plugin accepts. These are:
 - "paged" (default false) - A boolean flag to indicate whether arrays should be paged.
 - "pageNo" (default 1) - An integer for which page to display if the data is being paged.
 - "elemPerPage" (default 10) - The number of elements to display per page if the data is being paged.
+- "append" (default false) - If set to true, the template will be appended to the element rather than replacing the contents of the element.
+- "prepend" (default false) - If set to true, the template will be prepended to the element rather than replacing the contents of the element. The append option takes priority over prepend, so if both options are set to true, the element is appended and not prepended.
+- "beforeInsert" (default null) - Callback function to be called before inserting the template into the document. The format of the function is function($elem) where $elem is the jQuery object of the populated template about to be inserted into the document.
+- "afterInsert" (default null) - As above, a callback function to be called after inserting the template into the document. The format is the same as above.
 
 ## Future Plans
 

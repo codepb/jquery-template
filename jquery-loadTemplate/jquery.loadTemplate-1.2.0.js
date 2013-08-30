@@ -27,7 +27,9 @@
             pageNo: 1,
             elemPerPage: 10,
             append: false,
-            prepend: false
+            prepend: false,
+            beforeInsert: null,
+            afterInsert: null
         }, options);
 
         if ($.type(data) === "array") {
@@ -154,12 +156,20 @@
         bindData(template, data);
 
         $(this).each(function () {
+            var $templateHtml = $(template.html());
+            if (settings.beforeInsert) {
+                settings.beforeInsert($templateHtml);
+            }
             if (settings.append) {
-                $(this).append(template.html());
-            } else if(settings.prepend) {
-                $(this).prepend(template.html());
+
+                $(this).append($templateHtml);
+            } else if (settings.prepend) {
+                $(this).prepend($templateHtml);
             } else {
-                $(this).html(template.html());
+                $(this).html($templateHtml);
+            }
+            if (settings.afterInsert) {
+                settings.afterInsert($templateHtml);
             }
         });
 
