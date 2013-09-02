@@ -311,32 +311,32 @@
                 if (typeof value !== "undefined" && this.attribute) {
                     switch (this.attribute) {
                         case "content":
-                            $this.html(applyDataBindFormatters(value, this));
+                            $this.html(applyDataBindFormatters($this, value, this));
                             break;
                         case "contentAppend":
-                            $this.append(applyDataBindFormatters(value, this));
+                            $this.append(applyDataBindFormatters($this, value, this));
                             break;
                         case "contentPrepend":
-                            $this.prepend(applyDataBindFormatters(value, this));
+                            $this.prepend(applyDataBindFormatters($this, value, this));
                             break;
                         case "options":
                             var optionsData = this;
                             $(value).each(function () {
                                 var $option = $("<option/>");
-                                $option.attr('value', this[optionsData.value.value]).text(applyDataBindFormatters(this[optionsData.value.content], optionsData)).appendTo($this);
+                                $option.attr('value', this[optionsData.value.value]).text(applyDataBindFormatters($this, this[optionsData.value.content], optionsData)).appendTo($this);
                             });
                             break;
                         default:
-                            $this.attr(this.attribute, applyDataBindFormatters(value, this));
+                            $this.attr(this.attribute, applyDataBindFormatters($this, value, this));
                     }
                 }
             });
         });
     }
 
-    function applyDataBindFormatters(value, data) {
+    function applyDataBindFormatters($elem, value, data) {
         if (data.formatter && formatters[data.formatter]) {
-            return formatters[data.formatter](value, data.formatOptions);
+            return formatters[data.formatter].call($elem, value, data.formatOptions);
         }
         return value;
     }
