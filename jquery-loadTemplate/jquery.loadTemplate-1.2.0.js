@@ -361,7 +361,7 @@
             formatter = $elem.attr("data-format");
             if (formatter && typeof formatters[formatter] === "function") {
                 var formatOptions = $elem.attr("data-format-options");
-                return formatters[formatter].call($elem[0],value, formatOptions);
+                return formatters[formatter].call($elem[0], value, formatOptions);
             }
         }
 
