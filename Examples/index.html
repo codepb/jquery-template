@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -9,7 +8,7 @@
         <link rel="stylesheet" type="text/css" href="css/default.css"/>
         <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
         <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script src="../jquery-loadTemplate/jquery.loadTemplate-1.2.1.js"></script>
     </head>
     <body>
@@ -68,7 +67,6 @@
                 }
                 function highlightSupported() {
                     var ver = getInternetExplorerVersion();
-
                     if (ver > -1) {
                         if (ver < 9) {
                             return false;
@@ -78,7 +76,6 @@
                 }
                 $("a").click(function (e) {
                     e.preventDefault();
-
                     var $div = $("<div/>");
                     $($div).load($(this).attr("href"), function () {
                         $(".contentContainer > div").hide();

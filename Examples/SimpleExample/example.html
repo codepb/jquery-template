@@ -20,53 +20,53 @@
 </script>
 
 <script type="text/javascript">
-	$(function() {
+    $(function() {
         // Set our data for the post
         var post = {
-                author: 'Joe Bloggs',
-                date: '25th May 2013',
-                authorPicture: '/Examples/SimpleExample/img/joeBloggs.gif',
-                options: [{value:1, content:'test'}, {value: 2, content: 'test2'}],
-                post: 'This is the contents of my post'
-            }
+            author: 'Joe Bloggs',
+            date: '25th May 2013',
+            authorPicture: 'SimpleExample/img/joeBloggs.gif',
+            options: [{value:1, content:'test'}, {value: 2, content: 'test2'}],
+            post: 'This is the contents of my post'
+        };
 
-            var posts = [
-                post,
-                {
-                    author: 'Joe Bloggs 2',
-                    date: '28th May 2013',
-                    authorPicture: '/Examples/SimpleExample/img/joeBloggs.gif',
-                    options: [{value:3, content:'test3'}, {value: 4, content: 'test4'}, {value:5, content:'test5'}, {value: 6, content: 'test6'}],
-                    post: 'This is the contents of my other post'
-                }
-            ]
+        var posts = [
+            post,
+            {
+                author: 'Joe Bloggs 2',
+                date: '28th May 2013',
+                authorPicture: 'SimpleExample/img/joeBloggs.gif',
+                options: [{value:3, content:'test3'}, {value: 4, content: 'test4'}, {value:5, content:'test5'}, {value: 6, content: 'test6'}],
+                post: 'This is the contents of my other post'
+            }
+        ];
 
         $.addTemplateFormatter({
             upperCaseFormatter : function(value, template) {
-                    return value.toUpperCase();
-                },
+                return value.toUpperCase();
+            },
             lowerCaseFormatter : function(value, template) {
-                    return value.toLowerCase();
-                },
+                return value.toLowerCase();
+            },
             sameCaseFormatter : function(value, template) {
-                    if(template == "upper") {
-					    return value.toUpperCase();
-				    } else {
-					    return value.toLowerCase();
-				    }
+                if(template == "upper") {
+                    return value.toUpperCase();
+                } else {
+                    return value.toLowerCase();
                 }
+            }
         });
 
         // Load template from our templates folder,
         // and populate the data from the post object.
-		$(".simple-template-container").loadTemplate("/Examples/SimpleExample/Templates/simple.html", posts);
+        $(".simple-template-container").loadTemplate("SimpleExample/Templates/simple.html", posts);
 
         // Load template from our templates folder,
         // and populate the data from the post object.
-		$(".simple-template-container-single").loadTemplate("/Examples/SimpleExample/Templates/simple.html", post);
+        $(".simple-template-container-single").loadTemplate("SimpleExample/Templates/simple.html", post);
 
         // Load template from element on same page,
         // and populate the data from the post object.
         $(".script-template-container").loadTemplate("#template", post);
-	});
+    });
 </script>
