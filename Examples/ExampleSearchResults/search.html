@@ -24,10 +24,12 @@ are not provided).</p>
     <tbody>
     </tbody>
 </table>
+
 <div id="ResultsPaging">
     <button data-action="prev" class="nav-button pure-button">Previous</button>
     <button data-action="next" class="nav-button pure-button">Next</button>
 </div>
+
 <script type="text/javascript">
     $(function () {
         var page = 1;
@@ -51,10 +53,10 @@ are not provided).</p>
             productLink: function (value) {
                 return "Products/" + value;
             }
-
         });
+
         $("#PerformSearch").click(function () {
-            $.get("/Examples/ExampleSearchResults/Services/searchResults.txt", function (response) {
+            $.get("ExampleSearchResults/Services/searchResults.txt", function (response) {
                 data = response
                 displayPage(1);
             }, "json");
@@ -69,7 +71,7 @@ are not provided).</p>
         });
 
         function displayPage(pageNo) {
-            $("#ResultsDisplay tbody").loadTemplate("/Examples/ExampleSearchResults/Templates/SearchResult.html", data, {paged: true, pageNo: pageNo, elemPerPage: resultsPerPage});
+            $("#ResultsDisplay tbody").loadTemplate("ExampleSearchResults/Templates/SearchResult.html", data, {paged: true, pageNo: pageNo, elemPerPage: resultsPerPage});
             page = pageNo;
             if (page * resultsPerPage > data.length) {
                 $("[data-action='next']").attr('disabled', 'disabled');
