@@ -67,12 +67,12 @@
     }
 
     function processArray(template, data, settings) {
+        settings = settings || {};
         var $that = this,
             todo = data.length,
+            doPrepend = settings.prepend && !settings.append,
             done = 0,
             newOptions;
-
-        settings = settings || {};
 
         if (settings.paged) {
             var startNo = (settings.pageNo - 1) * settings.elemPerPage;
@@ -84,7 +84,11 @@
             settings,
             {
                 complete: function () {
-                    $that.append(this.html());
+                    if (doPrepend){
+                        $that.prepend(this.html());
+                    } else {
+                        $that.append(this.html());
+                    }
                     done++;
                     if (done === todo) {
                         if (settings && typeof settings.complete === "function") {
@@ -99,6 +103,7 @@
             $that.html("");
         }
 
+        if (doPrepend) data.reverse();
         $(data).each(function () {
             var $div = $("<div/>");
             loadTemplate.call($div, template, this, newOptions);
