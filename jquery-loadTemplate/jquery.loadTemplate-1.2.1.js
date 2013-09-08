@@ -36,9 +36,11 @@
             return processArray.call(this, template, data, settings);
         }
 
-        if (!containsSlashes(template) || template.indexOf('#') === 0) {
+        if (!containsSlashes(template)) {
             $template = $(template);
-            settings.isFile = false;
+            if (typeof template === 'string' && template.indexOf('#') === 0) {
+                settings.isFile = false;
+            }
         }
 
         isFile = settings.isFile || (typeof settings.isFile === "undefined" && (typeof $template === "undefined" || $template.length === 0));
