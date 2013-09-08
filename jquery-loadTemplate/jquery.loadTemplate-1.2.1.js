@@ -38,6 +38,9 @@
 
         if (!containsSlashes(template)) {
             $template = $(template);
+            if (typeof template === 'string' && template.indexOf('#') === 0) {
+                settings.isFile = false;
+            }
         }
 
         isFile = settings.isFile || (typeof settings.isFile === "undefined" && (typeof $template === "undefined" || $template.length === 0));
