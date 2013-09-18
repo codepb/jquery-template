@@ -71,7 +71,7 @@ are not provided).</p>
         });
 
         function displayPage(pageNo) {
-            $("#ResultsDisplay tbody").loadTemplate("ExampleSearchResults/Templates/SearchResult.html", data, {paged: true, pageNo: pageNo, elemPerPage: resultsPerPage});
+            $("#ResultsDisplay tbody").loadTemplate("ExampleSearchResults/Templates/SearchResult.html", data, {paged: true, pageNo: pageNo, elemPerPage: resultsPerPage, success: function() {console.log('success');}, complete: function(){console.log('complete')}, error: function(){console.log('error');}});
             page = pageNo;
             if (page * resultsPerPage > data.length) {
                 $("[data-action='next']").attr('disabled', 'disabled');

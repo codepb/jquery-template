@@ -72,11 +72,14 @@
             todo = data.length,
             doPrepend = settings.prepend && !settings.append,
             done = 0,
+            success = 0,
+            errored = false,
             newOptions;
 
         if (settings.paged) {
             var startNo = (settings.pageNo - 1) * settings.elemPerPage;
             data = data.slice(startNo, startNo + settings.elemPerPage);
+            todo = data.length;
         }
 
         newOptions = $.extend(
@@ -84,17 +87,31 @@
             settings,
             {
                 complete: function () {
-                    if (doPrepend){
+                    if (doPrepend) {
                         $that.prepend(this.html());
                     } else {
                         $that.append(this.html());
                     }
                     done++;
                     if (done === todo) {
+                        if (errored && settings && typeof settings.error === "function") {
+                            settings.error();
+                        }
                         if (settings && typeof settings.complete === "function") {
                             settings.complete();
                         }
                     }
+                },
+                success: function () {
+                    success++;
+                    if (success === todo) {
+                        if (settings && typeof settings.success === "function") {
+                            settings.success();
+                        }
+                    }
+                },
+                error: function () {
+                    errored = true;
                 }
             }
         );
