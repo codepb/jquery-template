@@ -95,7 +95,7 @@
                     done++;
                     if (done === todo) {
                         if (errored && settings && typeof settings.error === "function") {
-                            settings.error();
+                            settings.error.call($that);
                         }
                         if (settings && typeof settings.complete === "function") {
                             settings.complete();
