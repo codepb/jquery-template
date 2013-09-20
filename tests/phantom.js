@@ -4,7 +4,6 @@ var fs = require('fs');
 
 page.onConsoleMessage = function (msg, line, source) {
     console.error(msg);
-    //fs.write('/dev/stdout',msg);
 };
 
 page.onClosing = function(){
@@ -50,7 +49,7 @@ function createReport(obj) {
 
 //this should be run on a server
 //but for now local file seems ok
-page.open('index.html', function(status) {
+page.open('./tests/index.html', function(status) {
     //var timeout = setTimeout(function(){
     var evaluate = function(){
         return page.evaluate(function(phantom) {
