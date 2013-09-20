@@ -1,1 +1,2 @@
-script: phantomjs ./tests/phantom.js
+before_script : cd tests
+script: phantomjs phantom.js

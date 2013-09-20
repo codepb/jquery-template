@@ -49,7 +49,7 @@ function createReport(obj) {
 
 //this should be run on a server
 //but for now local file seems ok
-page.open('./tests/index.html', function(status) {
+page.open('index.html', function(status) {
     //var timeout = setTimeout(function(){
     var evaluate = function(){
         return page.evaluate(function(phantom) {
