@@ -2,7 +2,7 @@
     {
         "id": 2,
         "name": "An ice sculpture",
-        "price": 12.50,
+        "price": 0.00,
         "tags": ["cold", "ice", "sculpture"],
         "dimensions": {
             "length": 7.0,

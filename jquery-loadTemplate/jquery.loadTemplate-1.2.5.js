@@ -309,7 +309,7 @@
 
             $this.removeAttr(attribute);
 
-            if (value && dataBindFunction) {
+            if (typeof value !== 'undefined' && dataBindFunction) {
                 dataBindFunction($this, value);
             } else if (noDataFunction) {
                 noDataFunction($this);
