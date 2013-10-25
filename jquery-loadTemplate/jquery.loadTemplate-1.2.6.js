@@ -275,7 +275,7 @@
         });
 
         processElements("data-value", template, data, function ($elem, value) {
-            $elem.val(applyFormatters($elem, value, "value"));
+            $elem.attr("value", applyFormatters($elem, value, "value"));
         });
 
         processElements("data-link", template, data, function ($elem, value) {

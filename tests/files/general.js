@@ -27,6 +27,10 @@
             }
         });
     }
+
+    function testRenderSingle (inputData){
+        $("#render").loadTemplate("#template", inputData);
+    }
         
     function test(assert,async){
         return [
@@ -108,6 +112,15 @@
                     var name = ele.find(".name").text();
                     assert("first id 1 !== " + id, id == 1);
                     assert("first name 'first' !== " + name, "first" == name);
+                }
+            },
+            {
+                name: "Bind Value",
+                test: function()
+                {
+                    testRenderSingle(data[0]);
+                    var val = $('#render input.hidden').val() ;
+                    assert(val + " != " + data[0]['id'], val == data[0]['id']);  
                 }
             },
             {

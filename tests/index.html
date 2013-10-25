@@ -3,7 +3,7 @@
     <head>
         <title>loadTemplate Test Suite</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
-        <script src="../jquery-loadTemplate/jquery.loadTemplate-1.2.5.js" type="text/javascript"></script>
+        <script src="../jquery-loadTemplate/jquery.loadTemplate-1.2.6.js" type="text/javascript"></script>
         <script src="testRunner.js" type="text/javascript"></script>
         
         <!--TEST SCRIPTS-->
@@ -77,7 +77,7 @@
             <div class="container">
                 <div class="name" data-content="name"></div>
                 <div class= "id" data-content="id"></div>
-                <input class="hidden" type="hidden" value="" data-value="id" />
+                <input class="hidden" type="text" value="" data-value="id" />
             </div>
         </script>
         
@@ -86,7 +86,7 @@
             <div class="container">
                 <div class="name" data-content="name" data-format="UpperCaseFormatter"></div>
                 <div class= "id" data-content="id" data-format="idFormatter"></div>
-                <input class="hidden" type="hidden" value="" data-value="id" />
+                <input class="hidden" type="text" value="" data-value="id" />
             </div>
         </script>
         
@@ -95,7 +95,7 @@
             <div class="container">
                 <div class="name" data-content="name" data-format="singleFormatter"></div>
                 <div class= "id" data-content="id" data-format="idFormatter"></div>
-                <input class="hidden" type="hidden" data-value="id"  data-format-target="value" data-format="singleFormatter2" />
+                <input class="hidden" type="text" data-value="id"  data-format-target="value" data-format="singleFormatter2" />
             </div>
         </script>
         
