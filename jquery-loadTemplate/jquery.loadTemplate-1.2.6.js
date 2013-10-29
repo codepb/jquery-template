@@ -348,7 +348,11 @@
                             var optionsData = this;
                             $(value).each(function () {
                                 var $option = $("<option/>");
-                                $option.attr('value', this[optionsData.value.value]).text(applyDataBindFormatters($this, this[optionsData.value.content], optionsData)).appendTo($this);
+                                $option
+                                    .attr('value', this[optionsData.value.value])
+                                    .text(applyDataBindFormatters($this, this[optionsData.value.content], optionsData))
+                                    .attr('selected', typeof this[optionsData.value.selected]== undefined ? false : this[optionsData.value.selected])
+                                    .appendTo($this);
                             });
                             break;
                         default:
