@@ -149,10 +149,26 @@
         }
     }
 
+    function uniqueId() {
+        return new Date().getTime();
+    }
+
+    function urlAvoidCache(url) {
+        if (url.indexOf('?') !== -1) {
+            return url += "&_=" + uniqueId();
+        }
+        else {
+            return url += "?_=" + uniqueId();
+        }
+    }
+
     function loadAndPrepareTemplate(template, selection, data, settings) {
         var $templateContainer = $("<div/>");
 
         templates[template] = null;
+        if (settings.overwriteCache) {
+            template = urlAvoidCache(template);
+        }
         $templateContainer.load(template, function (responseText, textStatus) {
             if (textStatus === "error") {
                 handleTemplateLoadingError(template, selection, data, settings);
@@ -351,7 +367,7 @@
                                 $option
                                     .attr('value', this[optionsData.value.value])
                                     .text(applyDataBindFormatters($this, this[optionsData.value.content], optionsData))
-                                    .attr('selected', typeof this[optionsData.value.selected]== undefined ? false : this[optionsData.value.selected])
+                                    .attr('selected', typeof this[optionsData.value.selected] == undefined ? false : this[optionsData.value.selected])
                                     .appendTo($this);
                             });
                             break;
