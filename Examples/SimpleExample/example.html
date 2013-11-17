@@ -9,6 +9,10 @@
 <div class="script-template-container"></div>
 <div class="script-template-container"></div>
 
+<ul class="this-test"></ul>
+
+<div class="nested"></div>
+
 <!-- Template -->
 <script type="text/html" id="template">
     <img data-src="authorPicture" data-alt="author" data-link-wrap="authorPicture"/>
@@ -19,14 +23,25 @@
     </div>
 </script>
 
+<script type="text/html" id="templateThis">
+    <li data-template-bind='
+        {"attribute": "content", "value": "this"}'></li>
+</script>
+
+<script type="text/html" id="nestTest">
+    <div data-content="testSingle"></div>
+    <div data-template-bind='{"attribute": "content", "value": "testArray", "formatter": "nestedTemplateFormatter", "formatOptions": {"parentElement": "ul", "template": "#templateThis"}}'></div>
+    <div data-content="testArray" data-format="nestedTemplateFormatter" data-format-options='{"parentElement": "ul", "template": "#templateThis"}'></div>
+</script>
+
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         // Set our data for the post
         var post = {
             author: 'Joe Bloggs',
             date: '25th May 2013',
             authorPicture: 'SimpleExample/img/joeBloggs.gif',
-            options: [{value:1, content:'test'}, {value: 2, content: 'test2'}],
+            options: [{ value: 1, content: 'test' }, { value: 2, content: 'test2'}],
             post: 'This is the contents of my post'
         };
 
@@ -36,20 +51,20 @@
                 author: 'Joe Bloggs 2',
                 date: '28th May 2013',
                 authorPicture: 'SimpleExample/img/joeBloggs.gif',
-                options: [{value:3, content:'test3'}, {value: 4, content: 'test4'}, {value:5, content:'test5'}, {value: 6, content: 'test6'}],
+                options: [{ value: 3, content: 'test3' }, { value: 4, content: 'test4' }, { value: 5, content: 'test5' }, { value: 6, content: 'test6'}],
                 post: 'This is the contents of my other post'
             }
         ];
 
         $.addTemplateFormatter({
-            upperCaseFormatter : function(value, template) {
+            upperCaseFormatter: function (value, options) {
                 return value.toUpperCase();
             },
-            lowerCaseFormatter : function(value, template) {
+            lowerCaseFormatter: function (value, options) {
                 return value.toLowerCase();
             },
-            sameCaseFormatter : function(value, template) {
-                if(template == "upper") {
+            sameCaseFormatter: function (value, options) {
+                if (options == "upper") {
                     return value.toUpperCase();
                 } else {
                     return value.toLowerCase();
@@ -63,10 +78,19 @@
 
         // Load template from our templates folder,
         // and populate the data from the post object.
-        $(".simple-template-container-single").loadTemplate("SimpleExample/Templates/simple.html", post, {overwriteCache: true});
+        $(".simple-template-container-single").loadTemplate("SimpleExample/Templates/simple.html", post, { overwriteCache: true });
 
         // Load template from element on same page,
         // and populate the data from the post object.
         $(".script-template-container").loadTemplate("#template", post);
+
+        var sampleData = {
+            testSingle: "singleString",
+            testArray: ["testString1", "testString2", "testString3", 4]
+        }
+
+        $(".this-test").loadTemplate("#templateThis", ["testString1", "testString2", "testString3", 4]);
+
+        $(".nested").loadTemplate("#nestTest", sampleData);
     });
 </script>

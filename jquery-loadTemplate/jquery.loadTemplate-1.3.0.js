@@ -387,6 +387,9 @@
     }
 
     function getValue(data, param) {
+        if (param === "this") {
+            return data;
+        }
         var paramParts = param.split('.'),
             part,
             value = data;
@@ -412,7 +415,19 @@
 
         return value;
     }
+    addTemplateFormatter("nestedTemplateFormatter", function (value, options) {
+        if (!options) {
+            return;
+        }
+        
+        if (typeof options === "string") {
+            options = $.parseJSON(options);
+        }
 
+        var parentElement = options.parentElement || "div";
+        var template = options.template || options;
+        return $("<" + parentElement + "/>").loadTemplate(template, value);
+    });
     $.fn.loadTemplate = loadTemplate;
     $.addTemplateFormatter = addTemplateFormatter;
 
