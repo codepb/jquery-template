@@ -149,10 +149,26 @@
         }
     }
 
+    function uniqueId() {
+        return new Date().getTime();
+    }
+
+    function urlAvoidCache(url) {
+        if (url.indexOf('?') !== -1) {
+            return url += "&_=" + uniqueId();
+        }
+        else {
+            return url += "?_=" + uniqueId();
+        }
+    }
+
     function loadAndPrepareTemplate(template, selection, data, settings) {
         var $templateContainer = $("<div/>");
 
         templates[template] = null;
+        if (settings.overwriteCache) {
+            template = urlAvoidCache(template);
+        }
         $templateContainer.load(template, function (responseText, textStatus) {
             if (textStatus === "error") {
                 handleTemplateLoadingError(template, selection, data, settings);
@@ -351,7 +367,7 @@
                                 $option
                                     .attr('value', this[optionsData.value.value])
                                     .text(applyDataBindFormatters($this, this[optionsData.value.content], optionsData))
-                                    .attr('selected', typeof this[optionsData.value.selected]== undefined ? false : this[optionsData.value.selected])
+                                    .attr('selected', typeof this[optionsData.value.selected] == undefined ? false : this[optionsData.value.selected])
                                     .appendTo($this);
                             });
                             break;
@@ -371,6 +387,9 @@
     }
 
     function getValue(data, param) {
+        if (param === "this") {
+            return data;
+        }
         var paramParts = param.split('.'),
             part,
             value = data;
@@ -396,7 +415,19 @@
 
         return value;
     }
+    addTemplateFormatter("nestedTemplateFormatter", function (value, options) {
+        if (!options) {
+            return;
+        }
+        
+        if (typeof options === "string") {
+            options = $.parseJSON(options);
+        }
 
+        var parentElement = options.parentElement || "div";
+        var template = options.template || options;
+        return $("<" + parentElement + "/>").loadTemplate(template, value);
+    });
     $.fn.loadTemplate = loadTemplate;
     $.addTemplateFormatter = addTemplateFormatter;
 
