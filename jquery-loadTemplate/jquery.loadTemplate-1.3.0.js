@@ -280,6 +280,10 @@
             $elem.prepend(applyFormatters($elem, value, "content"));
         });
 
+        processElements("data-content-text", template, data, function ($elem, value) {
+            $elem.text(applyFormatters($elem, value, "content"));
+        });
+
         processElements("data-src", template, data, function ($elem, value) {
             $elem.attr("src", applyFormatters($elem, value, "src"));
         }, function ($elem) {
@@ -359,6 +363,9 @@
                             break;
                         case "contentPrepend":
                             $this.prepend(applyDataBindFormatters($this, value, this));
+                            break;
+                        case "contentText":
+                            $this.text(applyDataBindFormatters($this, value, this));
                             break;
                         case "options":
                             var optionsData = this;
