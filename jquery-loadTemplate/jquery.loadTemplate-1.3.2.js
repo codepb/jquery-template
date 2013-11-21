@@ -427,7 +427,7 @@
             return;
         }
         
-        if (typeof options === "string") {
+        if (typeof options === "string" && options[0] === "{") {
             options = $.parseJSON(options);
         }
 
