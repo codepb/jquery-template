@@ -3,7 +3,7 @@
     var templates = {},
         queue = {},
         formatters = {},
-		settings;
+	settings;
 
     function loadTemplate(template, data, options) {
         var $that = this,
