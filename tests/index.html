@@ -12,7 +12,8 @@
                 'files/general.js',
                 'files/formatters.js',
                 'files/callback.js',
-                'files/error.js'
+                'files/error.js',
+				'files/bindingOptions.js'
             ]);
         </script>
         
@@ -112,6 +113,18 @@
             <div class='attribute-nest' data-content="testArray" data-format="nestedTemplateFormatter" data-format-options='{"parentElement": "ul", "template": "#thisTemplate"}'></div>
         </script>
         
+		<script type="text/html" id="templateWithBindingParamters">
+			<h3><a href="#" data-content-append="title">Titel: </a></h3>
+			<h4 data-content-append="subtitle" data-binding-options='{"ignoreUndefined": true, "ignoreNull": true}'>Subtitle: </h4>
+		</script>
+		<div id="loadedWithBindingParametersAsFunctionParameters" class="hide"></div>
+
+		<script type="text/html" id="templateWithoutBindingParamters">
+			<h3><a href="#" data-content-append="title">Titel: </a></h3>
+			<h4 data-content-append="subtitle">Subtitle: </h4>
+		</script>
+		<div id="loadedWithBindingParametersAsTemplateParameters" class="hide" ></div>
+		
         <div id="wru"></div>
         <script src="wru.js" type="text/javascript"></script>
     </body>

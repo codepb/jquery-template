@@ -2,17 +2,17 @@
     "use strict";
     var templates = {},
         queue = {},
-        formatters = {};
+        formatters = {},
+		settings;
 
     function loadTemplate(template, data, options) {
         var $that = this,
             $template,
-            settings,
             isFile;
 
         data = data || {};
 
-        settings = $.extend({
+        settings = $.extend(true, {
             // These are the defaults.
             overwriteCache: false,
             complete: null,
@@ -29,7 +29,12 @@
             append: false,
             prepend: false,
             beforeInsert: null,
-            afterInsert: null
+            afterInsert: null,
+			bindingOptions: {
+				ignoreUndefined: false,
+				ignoreNull: false,
+				ignoreEmptyString: false
+			}
         }, options);
 
         if ($.type(data) === "array") {
@@ -327,7 +332,12 @@
                 param = $this.attr(attribute),
                 value = getValue(data, param);
 
-            $this.removeAttr(attribute);
+			if (!valueIsAllowedByBindingOptions($this, value)) {
+				$this.remove();
+				return;
+			}
+			
+			$this.removeAttr(attribute);
 
             if (typeof value !== 'undefined' && dataBindFunction) {
                 dataBindFunction($this, value);
@@ -338,6 +348,33 @@
         return;
     }
 
+	function valueIsAllowedByBindingOptions($element, value) {
+		
+		var bindingOptions = {}
+		
+		if ($element.attr("data-binding-options")) {
+			bindingOptions = $.parseJSON($element.attr("data-binding-options"))
+			$element.removeAttr("data-binding-options");
+		}
+		
+		// extend general bindingOptions with specific settings
+		bindingOptions = $.extend({}, settings.bindingOptions, bindingOptions)
+
+		
+		if (bindingOptions.ignoreUndefined && typeof value === "undefined") {
+			return false;
+			
+		} else if (bindingOptions.ignoreNull && value === null){
+			return false;
+			
+		} else if (bindingOptions.ignoreEmptyString && value === "") {
+			return false;
+			
+		} else {
+			return true;
+		}
+	}
+	
     function processAllElements(template, data) {
         $("[data-template-bind]", template).each(function () {
             var $this = $(this),
