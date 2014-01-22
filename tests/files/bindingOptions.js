@@ -8,12 +8,13 @@
 		"subtitle": null
 	},{
 		"title":  "The Da Vinci Code"
+	},{
+		"title": "Lord of the Flies",
+		"subtitle": ""
 	}];
 
-
-
     function testLoadedWithFunctionParameters() {
-		$("#loadedWithBindingParametersAsFunctionParameters").loadTemplate($("#templateWithoutBindingParamters"), data, {bindingOptions: {"ignoreUndefined": true, "ignoreNull": true}});
+		$("#loadedWithBindingParametersAsFunctionParameters").loadTemplate($("#templateWithoutBindingParamters"), data, {bindingOptions: {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}});
     }
 
 	function testLoadedWithTemplateParameters() {
