@@ -13,14 +13,18 @@
 		"subtitle": ""
 	}];
 
-    function testLoadedWithFunctionParameters() {
-		$("#loadedWithBindingParametersAsFunctionParameters").loadTemplate($("#templateWithoutBindingParamters"), data, {bindingOptions: {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}});
+    function testLoadWithFunctionParameters() {
+		$("#bindingOptionsContainer").loadTemplate($("#templateWithoutBindingOptions"), data, {bindingOptions: {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}});
     }
 
-	function testLoadedWithTemplateParameters() {
-		$("#loadedWithBindingParametersAsTemplateParameters").loadTemplate($("#templateWithBindingParamters"), data);
+	function testLoadWithTemplateAttributes() {
+		$("#bindingOptionsContainer").loadTemplate($("#templateWithBindingOptions"), data);
     }
 
+	function testLoadTemplateWithBindingOptionsInDataTemplateBindAttribute() {
+		$("#bindingOptionsContainer").loadTemplate($("#templateWithBindingOptionsAsDataBindTemplateAttribute"), data);
+    }
+	
     function test(assert, async) {
         return [
             {
@@ -38,18 +42,33 @@
             {
                 name: "Load template with binding options as function parameters",
                 test: function () {
-                    testLoadedWithFunctionParameters();
+                    testLoadWithFunctionParameters();
                     
-                    var childs = $('#loadedWithBindingParametersAsFunctionParameters h4').length;
+                    var childs = $('#bindingOptionsContainer h4').length;
                     assert(childs === 1);
                 }
             },
 			{
-                name: "Load template with binding options as template parameters",
+                name: "Load template with binding options as template attributes",
+				setup: function () {
+					$('#bindingOptionsContainer').empty();
+				},
                 test: function () {
-                    testLoadedWithTemplateParameters();
+                    testLoadWithTemplateAttributes();
                     
-                    var childs = $('#loadedWithBindingParametersAsTemplateParameters h4').length;
+                    var childs = $('#bindingOptionsContainer h4').length;
+                    assert(childs === 1);
+                }
+            },
+			{
+                name: "Load template with binding options in 'data-template-bind' attribute",
+				setup: function () {
+					$('#bindingOptionsContainer').empty();
+				},
+                test: function () {
+                    testLoadTemplateWithBindingOptionsInDataTemplateBindAttribute();
+                    
+                    var childs = $('#bindingOptionsContainer h4').length;
                     assert(childs === 1);
                 }
             }];

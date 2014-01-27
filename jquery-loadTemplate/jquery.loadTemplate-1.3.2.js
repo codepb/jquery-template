@@ -348,19 +348,10 @@
         return;
     }
 
-	function valueIsAllowedByBindingOptions($element, value) {
-		
-		var bindingOptions = {}
-		
-		if ($element.attr("data-binding-options")) {
-			bindingOptions = $.parseJSON($element.attr("data-binding-options"))
-			$element.removeAttr("data-binding-options");
-		}
-		
-		// extend general bindingOptions with specific settings
-		bindingOptions = $.extend({}, settings.bindingOptions, bindingOptions)
+	function valueIsAllowedByBindingOptions(bindingOptionsContainer, value) {
 
-		
+		var bindingOptions = getBindingOptions(bindingOptionsContainer);
+
 		if (bindingOptions.ignoreUndefined && typeof value === "undefined") {
 			return false;
 			
@@ -373,6 +364,25 @@
 		} else {
 			return true;
 		}
+	}
+	
+	function getBindingOptions(bindingOptionsContainer) {
+
+		var bindingOptions = {};
+	
+		// binding options passed as template attribute, i.e. 'data-binding-options'
+		if (bindingOptionsContainer instanceof jQuery && bindingOptionsContainer.attr("data-binding-options")) {
+			
+			bindingOptions = $.parseJSON(bindingOptionsContainer.attr("data-binding-options"));
+			bindingOptionsContainer.removeAttr("data-binding-options");
+			
+		// binding options defined in a "data-template-bind" attribute
+		} else if(typeof bindingOptionsContainer === "object" && bindingOptionsContainer.hasOwnProperty('bindingOptions')) {
+			bindingOptions = bindingOptionsContainer.bindingOptions;
+		}
+		
+		// extend general bindingOptions with specific settings
+		return $.extend({}, settings.bindingOptions, bindingOptions);
 	}
 	
     function processAllElements(template, data) {
@@ -390,7 +400,13 @@
                 } else {
                     value = getValue(data, this.value);
                 }
-                if (typeof value !== "undefined" && this.attribute) {
+                if (this.attribute) {
+				
+					if (!valueIsAllowedByBindingOptions(this, value)) {
+						$this.remove();
+						return;
+					}
+				
                     switch (this.attribute) {
                         case "content":
                             $this.html(applyDataBindFormatters($this, value, this));
