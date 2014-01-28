@@ -87,8 +87,8 @@ Alternatively with a map:
 
 To call these formatters, simply the following will work:
 
-	<div data-content="post" data-template="SameCaseFormatter"
-		data-template-format="upper"></div>
+	<div data-content="post" data-format="SameCaseFormatter"
+		data-format-options="upper"></div>
 
 Formatters must be added before they are used else a template will not be able to access them. Formatters are used at the time of populating the data. You can also target any binding with the "data-format-target". The value of this is the binding to target so to target data-alt binding, set 'data-format-target="alt"'.
 
