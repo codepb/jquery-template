@@ -14,6 +14,7 @@
 
         settings = $.extend({
             // These are the defaults.
+            async: true,
             overwriteCache: false,
             complete: null,
             success: null,
@@ -158,10 +159,10 @@
 
     function urlAvoidCache(url) {
         if (url.indexOf('?') !== -1) {
-            return url += "&_=" + uniqueId();
+            return url + "&_=" + uniqueId();
         }
         else {
-            return url += "?_=" + uniqueId();
+            return url + "?_=" + uniqueId();
         }
     }
 
@@ -169,12 +170,13 @@
         var $templateContainer = $("<div/>");
 
         templates[template] = null;
+        var templateUrl = template;
         if (settings.overwriteCache) {
-            template = urlAvoidCache(template);
+            templateUrl = urlAvoidCache(templateUrl);
         }
         $.ajax({
-            url: template,
-            async: false,
+            url: templateUrl,
+            async: settings.async,
             success: function (templateContent) {
                 $templateContainer.html(templateContent);
                 handleTemplateLoadingSuccess($templateContainer, template, selection, data, settings);
