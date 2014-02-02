@@ -47,9 +47,6 @@
                 });
             },
             test: function () {
-                
-                //give it some time to check URL
-                setTimeout(async(function () { // async testing
                     
                     //success callback will not be fired
                     assert("Success Counter 0 = " + successCounter, 0 === successCounter);
@@ -64,8 +61,7 @@
                     var expected = 'error,complete';
                     var got = sequence.toString();
                     assert("Sequence " + expected + " = " + got, expected == got );
-                    
-                }), 1000);
+
             }
         };
     }
@@ -83,11 +79,9 @@
             },
             test: function () {
                 //give it some time to check URL
-                setTimeout(async(function () { //asnc testing
                     var got = $('#render').text();
                     var expected = "There was an error loading the template.";
                     assert("Error Message " + expected + " = " + got, got == expected);
-                }), 1000);
             }
         };
     }

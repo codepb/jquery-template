@@ -96,7 +96,7 @@
                         $that.append(this.html());
                     }
                     done++;
-                    if (done === todo) {
+                    if (done === todo || errored) {
                         if (errored && settings && typeof settings.error === "function") {
                             settings.error.call($that);
                         }
@@ -127,6 +127,9 @@
         $(data).each(function () {
             var $div = $("<div/>");
             loadTemplate.call($div, template, this, newOptions);
+            if (errored) {
+                return false;
+            }
         });
 
         return this;
@@ -169,11 +172,15 @@
         if (settings.overwriteCache) {
             template = urlAvoidCache(template);
         }
-        $templateContainer.load(template, function (responseText, textStatus) {
-            if (textStatus === "error") {
-                handleTemplateLoadingError(template, selection, data, settings);
-            } else {
+        $.ajax({
+            url: template,
+            async: false,
+            success: function (templateContent) {
+                $templateContainer.html(templateContent);
                 handleTemplateLoadingSuccess($templateContainer, template, selection, data, settings);
+            },
+            error: function () {
+                handleTemplateLoadingError(template, selection, data, settings);
             }
         });
     }
@@ -426,7 +433,7 @@
         if (!options) {
             return;
         }
-        
+
         if (typeof options === "string" && options[0] === "{") {
             options = $.parseJSON(options);
         }
