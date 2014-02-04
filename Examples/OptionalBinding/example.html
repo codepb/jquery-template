@@ -1,0 +1,59 @@
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="jquery.loadTemplate-1.3.2-withBindingOption.js"></script>
+
+<script type="text/html" id="templateWithParamters">
+	<h3><a href="#" data-content-append="title">Titel: </a></h3>
+    <h4 data-content-append="subtitle" data-binding-options='{"ignoreUndefined": true, "ignoreNull": true}'>Subtitle: </h4>
+</script>
+
+<script type="text/html" id="template">
+	<h3><a href="#" data-content-append="title">Titel: </a></h3>
+    <h4 data-content-append="subtitle">Subtitle: </h4>
+</script>
+
+<script type="text/html" id="templateWithBindingOptionsAsDataBindTemplateAttribute">
+	<h3><a href="#" data-content-append="title">Titel: </a></h3>
+	<h4 data-template-bind='[{"attribute": "contentAppend", "value": "subtitle", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>Subtitle: </h4>
+</script>
+
+<script type="text/javascript">
+var data = [{
+    "title":  "Super Mario World 2",
+    "subtitle": "Yoshi's Island"
+},{
+    "title":  "The Little Prince",
+    "subtitle": null
+},{
+    "title":  "The Da Vinci Code"
+}];
+
+$(document).ready(function(){
+	$("#loadedWithFunctionParameters").loadTemplate($("#template"), data, {bindingOptions: {"ignoreUndefined": false, "ignoreNull": false}});
+	$("#loadedWithTemplateParameters").loadTemplate($("#templateWithParamters"), data);
+	
+	$("#bindingOptionsContainer").loadTemplate($("#templateWithBindingOptionsAsDataBindTemplateAttribute"), data);
+});
+
+
+</script>
+
+<br>
+Loaded with function parameters
+<hr>
+<div id="loadedWithFunctionParameters">
+
+</div>
+
+<br>
+Loaded with template parameters
+<hr>
+<div id="loadedWithTemplateParameters">
+
+</div>
+
+<br>
+Loaded with template as data-bind-template attribute
+<hr>
+<div id="bindingOptionsContainer"></div>
+
+

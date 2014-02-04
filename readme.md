@@ -56,7 +56,17 @@ Similarly the content of the template could be held in a separate html file with
             post: 'This is the contents of my post'
         });
 
-The plugin has a number of data-... attributes that can be used to populate various attributes with the data. There is also the powerful data-template-bind attribute that accepts a JSON object, enabling binding to any attribute, or the content of the element.
+Several options can be passed as function parameters. For example, to specify that 'null' values should not be rendered, load the template like this:
+
+    $("#template-container").loadTemplate("Templates/template.html",
+		{
+            author: 'Joe Bloggs',
+            date: null,
+            authorPicture: 'Authors/JoeBloggs.jpg',
+            post: 'This is the contents of my post'
+        }, {"ignoreNull": true}});
+
+In addition, the plugin has a number of data-... attributes that can be used to populate various attributes with the data. There is also the powerful data-template-bind attribute that accepts a JSON object, enabling binding to any attribute, or the content of the element.
 
 ### Data Formatters
 
@@ -103,7 +113,7 @@ There are a number of different bindings and ways to bind the data. The followin
 - "data-link" - sets the innerHtml of the element to be a link to the value provided (wraps the content in an &lt;a&gt; tag).
 - "data-link-wrap" - wraps the element in a link to the value provided. Same as "data-link", but the &lt;a&gt; tag wraps the element as well as the content.
 - "data-options" - adds options to a select box. The value for this should reference an array of strings, each option will be output as a separate option. The value will be the same as the displayed text for each option. For a more powerful version of this look at the data-template-bind option.
-
+- "data-binding-options" - Overrides global binding options passed as function parameters for this binding. For details check the options section below.
 On top of the attributes above, there is also a "data-template-bind" attribute. This is designed to handle more complex situations and allows a wide range of control. The attribute takes a JSON string and allows multiple bindings and options to be set in the one attribute.
 
 The "data-template-bind" value should be an array of objects. Each object represents one complete binding. Each object can contain the following properties:
@@ -112,6 +122,7 @@ The "data-template-bind" value should be an array of objects. Each object repres
 - "attribute" (required) - The attribute to bind to. This can be any attribute accepted by the jQuery.attr() method or one of the following: "content" - same as data-content, binds the innerHTML, "contentAppend" - same as data-append, appends the value, "contentPrepend" - same as data-prepend, prepends the value, "options" - same as data-options, but provides greater control. The value attribute for this is an object with a value property and a content property, and this will bind the value of the option to the value property, and the innerText of the option to the content property.
 - "formatter" (optional) - provides the formatter to apply to the specific binding. Multiple different attributes can use different formatters using this syntax.
 - "formatOptions" (optional) - the options to pass to the formatter applied.
+- "bindingOptions" (optional) - Overrides global binding options passed as function parameters for this binding. For details check the options section below.
 
 An example of using the "data-template-bind" attribute would be the following:
 
@@ -137,6 +148,7 @@ There are a number of options the plugin accepts. These are:
 - "prepend" (default false) - If set to true, the template will be prepended to the element rather than replacing the contents of the element. The append option takes priority over prepend, so if both options are set to true, the element is appended and not prepended.
 - "beforeInsert" (default null) - Callback function to be called before inserting the template into the document. The format of the function is function($elem) where $elem is the jQuery object of the populated template about to be inserted into the document.
 - "afterInsert" (default null) - As above, a callback function to be called after inserting the template into the document. The format is the same as above.
+- "bindingOptions" (default all flags false): add flags to ignore certain types of values. {"ignoreUndefined": false, "ignoreNull": false, "ignoreEmptyString": false}. The flags you set here, are overwritten on an element level by those specified in a template with a "data-binding-options" or a "data-template-bind" attribute. Examples can be found in the Examples/OptionalBinding folder.
 
 ## Future Plans
 
