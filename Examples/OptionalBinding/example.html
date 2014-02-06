@@ -38,7 +38,7 @@ var nestedData = {
     articles: data};
 
 $(document).ready(function(){
-	$("#loadedWithFunctionParameters").loadTemplate($("#template"), data, {bindingOptions: {"ignoreUndefined": false, "ignoreNull": false}});
+	$("#loadedWithFunctionParameters").loadTemplate($("#template"), data, {bindingOptions: {"ignoreUndefined": true, "ignoreNull": true}});
 	$("#loadedWithTemplateParameters").loadTemplate($("#templateWithParamters"), data);
 	$("#bindingOptionsContainer").loadTemplate($("#templateWithBindingOptionsAsDataBindTemplateAttribute"), data);
 	$("#containerForNestedTemplate").loadTemplate($("#wrapperForNestedTemplate"), nestedData, {bindingOptions: {"ignoreUndefined": true, "ignoreNull": true}});
