@@ -486,7 +486,7 @@
 
         var parentElement = options.parentElement || "div";
         var template = options.template || options;
-        return $("<" + parentElement + "/>").loadTemplate(template, value);
+        return $("<" + parentElement + "/>").loadTemplate(template, value, settings);
     });
     $.fn.loadTemplate = loadTemplate;
     $.addTemplateFormatter = addTemplateFormatter;

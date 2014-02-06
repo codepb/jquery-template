@@ -1,5 +1,5 @@
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script src="jquery.loadTemplate-1.3.2-withBindingOption.js"></script>
+<script src="../../jquery-loadTemplate/jquery.loadTemplate-1.3.2.js"></script>
 
 <script type="text/html" id="templateWithParamters">
 	<h3><a href="#" data-content-append="title">Titel: </a></h3>
@@ -16,6 +16,12 @@
 	<h4 data-template-bind='[{"attribute": "contentAppend", "value": "subtitle", "bindingOptions": {"ignoreUndefined": true, "ignoreNull": true, "ignoreEmptyString": true}}]'>Subtitle: </h4>
 </script>
 
+<script type="text/html" id="wrapperForNestedTemplate">
+  <h1 data-content-append="name">Name: </h1>
+  <div data-content="articles" data-format="nestedTemplateFormatter" data-format-options="#template">
+</script>
+
+
 <script type="text/javascript">
 var data = [{
     "title":  "Super Mario World 2",
@@ -27,11 +33,15 @@ var data = [{
     "title":  "The Da Vinci Code"
 }];
 
+var nestedData = {
+    name: "Interesting Titles",
+    articles: data};
+
 $(document).ready(function(){
 	$("#loadedWithFunctionParameters").loadTemplate($("#template"), data, {bindingOptions: {"ignoreUndefined": false, "ignoreNull": false}});
 	$("#loadedWithTemplateParameters").loadTemplate($("#templateWithParamters"), data);
-	
 	$("#bindingOptionsContainer").loadTemplate($("#templateWithBindingOptionsAsDataBindTemplateAttribute"), data);
+	$("#containerForNestedTemplate").loadTemplate($("#wrapperForNestedTemplate"), nestedData, {bindingOptions: {"ignoreUndefined": true, "ignoreNull": true}});
 });
 
 
@@ -56,4 +66,8 @@ Loaded with template as data-bind-template attribute
 <hr>
 <div id="bindingOptionsContainer"></div>
 
+<br>
+Loaded with nested template with function parameters
+<hr>
+<div id="containerForNestedTemplate"></div>
 
