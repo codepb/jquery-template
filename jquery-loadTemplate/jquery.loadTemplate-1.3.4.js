@@ -2,17 +2,17 @@
     "use strict";
     var templates = {},
         queue = {},
-        formatters = {};
+        formatters = {},
+	settings;
 
     function loadTemplate(template, data, options) {
         var $that = this,
             $template,
-            settings,
             isFile;
 
         data = data || {};
 
-        settings = $.extend({
+        settings = $.extend(true, {
             // These are the defaults.
             async: true,
             overwriteCache: false,
@@ -30,7 +30,12 @@
             append: false,
             prepend: false,
             beforeInsert: null,
-            afterInsert: null
+            afterInsert: null,
+			bindingOptions: {
+				ignoreUndefined: false,
+				ignoreNull: false,
+				ignoreEmptyString: false
+			}
         }, options);
 
         if ($.type(data) === "array") {
@@ -336,7 +341,12 @@
                 param = $this.attr(attribute),
                 value = getValue(data, param);
 
-            $this.removeAttr(attribute);
+			if (!valueIsAllowedByBindingOptions($this, value)) {
+				$this.remove();
+				return;
+			}
+			
+			$this.removeAttr(attribute);
 
             if (typeof value !== 'undefined' && dataBindFunction) {
                 dataBindFunction($this, value);
@@ -347,6 +357,43 @@
         return;
     }
 
+	function valueIsAllowedByBindingOptions(bindingOptionsContainer, value) {
+
+		var bindingOptions = getBindingOptions(bindingOptionsContainer);
+
+		if (bindingOptions.ignoreUndefined && typeof value === "undefined") {
+			return false;
+			
+		} else if (bindingOptions.ignoreNull && value === null){
+			return false;
+			
+		} else if (bindingOptions.ignoreEmptyString && value === "") {
+			return false;
+			
+		} else {
+			return true;
+		}
+	}
+	
+	function getBindingOptions(bindingOptionsContainer) {
+
+		var bindingOptions = {};
+	
+		// binding options passed as template attribute, i.e. 'data-binding-options'
+		if (bindingOptionsContainer instanceof jQuery && bindingOptionsContainer.attr("data-binding-options")) {
+			
+			bindingOptions = $.parseJSON(bindingOptionsContainer.attr("data-binding-options"));
+			bindingOptionsContainer.removeAttr("data-binding-options");
+			
+		// binding options defined in a "data-template-bind" attribute
+		} else if(typeof bindingOptionsContainer === "object" && bindingOptionsContainer.hasOwnProperty('bindingOptions')) {
+			bindingOptions = bindingOptionsContainer.bindingOptions;
+		}
+		
+		// extend general bindingOptions with specific settings
+		return $.extend({}, settings.bindingOptions, bindingOptions);
+	}
+	
     function processAllElements(template, data) {
         $("[data-template-bind]", template).each(function () {
             var $this = $(this),
@@ -362,7 +409,13 @@
                 } else {
                     value = getValue(data, this.value);
                 }
-                if (typeof value !== "undefined" && this.attribute) {
+                if (this.attribute) {
+				
+					if (!valueIsAllowedByBindingOptions(this, value)) {
+						$this.remove();
+						return;
+					}
+				
                     switch (this.attribute) {
                         case "content":
                             $this.html(applyDataBindFormatters($this, value, this));
@@ -442,7 +495,7 @@
 
         var parentElement = options.parentElement || "div";
         var template = options.template || options;
-        return $("<" + parentElement + "/>").loadTemplate(template, value);
+        return $("<" + parentElement + "/>").loadTemplate(template, value, settings);
     });
     $.fn.loadTemplate = loadTemplate;
     $.addTemplateFormatter = addTemplateFormatter;
