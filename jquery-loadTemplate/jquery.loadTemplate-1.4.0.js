@@ -2,13 +2,13 @@
     "use strict";
     var templates = {},
         queue = {},
-        formatters = {},
-	settings;
+        formatters = {};
 
     function loadTemplate(template, data, options) {
         var $that = this,
             $template,
-            isFile;
+            isFile,
+            settings;
 
         data = data || {};
 
@@ -31,11 +31,11 @@
             prepend: false,
             beforeInsert: null,
             afterInsert: null,
-			bindingOptions: {
-				ignoreUndefined: false,
-				ignoreNull: false,
-				ignoreEmptyString: false
-			}
+            bindingOptions: {
+                ignoreUndefined: false,
+                ignoreNull: false,
+                ignoreEmptyString: false
+            }
         }, options);
 
         if ($.type(data) === "array") {
@@ -208,7 +208,7 @@
     }
 
     function prepareTemplate(template, data, settings) {
-        bindData(template, data);
+        bindData(template, data, settings);
 
         $(this).each(function () {
             var $templateHtml = $(template.html());
@@ -279,74 +279,74 @@
         }
     }
 
-    function bindData(template, data) {
+    function bindData(template, data, settings) {
         data = data || {};
 
-        processElements("data-content", template, data, function ($elem, value) {
-            $elem.html(applyFormatters($elem, value, "content"));
+        processElements("data-content", template, data, settings, function ($elem, value) {
+            $elem.html(applyFormatters($elem, value, "content", settings));
         });
 
-        processElements("data-content-append", template, data, function ($elem, value) {
-            $elem.append(applyFormatters($elem, value, "content"));
+        processElements("data-content-append", template, data, settings, function ($elem, value) {
+            $elem.append(applyFormatters($elem, value, "content", settings));
         });
 
-        processElements("data-content-prepend", template, data, function ($elem, value) {
-            $elem.prepend(applyFormatters($elem, value, "content"));
+        processElements("data-content-prepend", template, data, settings, function ($elem, value) {
+            $elem.prepend(applyFormatters($elem, value, "content", settings));
         });
 
-        processElements("data-content-text", template, data, function ($elem, value) {
-            $elem.text(applyFormatters($elem, value, "content"));
+        processElements("data-content-text", template, data, settings, function ($elem, value) {
+            $elem.text(applyFormatters($elem, value, "content", settings));
         });
 
-        processElements("data-src", template, data, function ($elem, value) {
-            $elem.attr("src", applyFormatters($elem, value, "src"));
+        processElements("data-src", template, data, settings, function ($elem, value) {
+            $elem.attr("src", applyFormatters($elem, value, "src", settings));
         }, function ($elem) {
             $elem.remove();
         });
 
-        processElements("data-alt", template, data, function ($elem, value) {
-            $elem.attr("alt", applyFormatters($elem, value, "alt"));
+        processElements("data-alt", template, data, settings, function ($elem, value) {
+            $elem.attr("alt", applyFormatters($elem, value, "alt", settings));
         });
 
-        processElements("data-value", template, data, function ($elem, value) {
-            $elem.attr("value", applyFormatters($elem, value, "value"));
+        processElements("data-value", template, data, settings, function ($elem, value) {
+            $elem.attr("value", applyFormatters($elem, value, "value", settings));
         });
 
-        processElements("data-link", template, data, function ($elem, value) {
+        processElements("data-link", template, data, settings, function ($elem, value) {
             var $linkElem = $("<a/>");
-            $linkElem.attr("href", applyFormatters($elem, value, "link"));
+            $linkElem.attr("href", applyFormatters($elem, value, "link", settings));
             $linkElem.html($elem.html());
             $elem.html($linkElem);
         });
 
-        processElements("data-link-wrap", template, data, function ($elem, value) {
+        processElements("data-link-wrap", template, data, settings, function ($elem, value) {
             var $linkElem = $("<a/>");
-            $linkElem.attr("href", applyFormatters($elem, value, "link-wrap"));
+            $linkElem.attr("href", applyFormatters($elem, value, "link-wrap", settings));
             $elem.wrap($linkElem);
         });
 
-        processElements("data-options", template, data, function ($elem, value) {
+        processElements("data-options", template, data, settings, function ($elem, value) {
             $(value).each(function () {
                 var $option = $("<option/>");
                 $option.attr('value', this).text(this).appendTo($elem);
             });
         });
 
-        processAllElements(template, data);
+        processAllElements(template, data, settings);
     }
 
-    function processElements(attribute, template, data, dataBindFunction, noDataFunction) {
+    function processElements(attribute, template, data, settings, dataBindFunction, noDataFunction) {
         $("[" + attribute + "]", template).each(function () {
             var $this = $(this),
                 param = $this.attr(attribute),
                 value = getValue(data, param);
 
-			if (!valueIsAllowedByBindingOptions($this, value)) {
-				$this.remove();
-				return;
-			}
-			
-			$this.removeAttr(attribute);
+            if (!valueIsAllowedByBindingOptions($this, value, settings)) {
+                $this.remove();
+                return;
+            }
+
+            $this.removeAttr(attribute);
 
             if (typeof value !== 'undefined' && dataBindFunction) {
                 dataBindFunction($this, value);
@@ -357,44 +357,44 @@
         return;
     }
 
-	function valueIsAllowedByBindingOptions(bindingOptionsContainer, value) {
+    function valueIsAllowedByBindingOptions(bindingOptionsContainer, value, settings) {
 
-		var bindingOptions = getBindingOptions(bindingOptionsContainer);
+        var bindingOptions = getBindingOptions(bindingOptionsContainer, settings);
 
-		if (bindingOptions.ignoreUndefined && typeof value === "undefined") {
-			return false;
-			
-		} else if (bindingOptions.ignoreNull && value === null){
-			return false;
-			
-		} else if (bindingOptions.ignoreEmptyString && value === "") {
-			return false;
-			
-		} else {
-			return true;
-		}
-	}
-	
-	function getBindingOptions(bindingOptionsContainer) {
+        if (bindingOptions.ignoreUndefined && typeof value === "undefined") {
+            return false;
 
-		var bindingOptions = {};
-	
-		// binding options passed as template attribute, i.e. 'data-binding-options'
-		if (bindingOptionsContainer instanceof jQuery && bindingOptionsContainer.attr("data-binding-options")) {
-			
-			bindingOptions = $.parseJSON(bindingOptionsContainer.attr("data-binding-options"));
-			bindingOptionsContainer.removeAttr("data-binding-options");
-			
-		// binding options defined in a "data-template-bind" attribute
-		} else if(typeof bindingOptionsContainer === "object" && bindingOptionsContainer.hasOwnProperty('bindingOptions')) {
-			bindingOptions = bindingOptionsContainer.bindingOptions;
-		}
-		
-		// extend general bindingOptions with specific settings
-		return $.extend({}, settings.bindingOptions, bindingOptions);
-	}
-	
-    function processAllElements(template, data) {
+        } else if (bindingOptions.ignoreNull && value === null) {
+            return false;
+
+        } else if (bindingOptions.ignoreEmptyString && value === "") {
+            return false;
+
+        } else {
+            return true;
+        }
+    }
+
+    function getBindingOptions(bindingOptionsContainer, settings) {
+
+        var bindingOptions = {};
+
+        // binding options passed as template attribute, i.e. 'data-binding-options'
+        if (bindingOptionsContainer instanceof jQuery && bindingOptionsContainer.attr("data-binding-options")) {
+
+            bindingOptions = $.parseJSON(bindingOptionsContainer.attr("data-binding-options"));
+            bindingOptionsContainer.removeAttr("data-binding-options");
+
+            // binding options defined in a "data-template-bind" attribute
+        } else if (typeof bindingOptionsContainer === "object" && bindingOptionsContainer.hasOwnProperty('bindingOptions')) {
+            bindingOptions = bindingOptionsContainer.bindingOptions;
+        }
+
+        // extend general bindingOptions with specific settings
+        return $.extend({}, settings.bindingOptions, bindingOptions);
+    }
+
+    function processAllElements(template, data, settings) {
         $("[data-template-bind]", template).each(function () {
             var $this = $(this),
                 param = $.parseJSON($this.attr("data-template-bind"));
@@ -410,12 +410,12 @@
                     value = getValue(data, this.value);
                 }
                 if (this.attribute) {
-				
-					if (!valueIsAllowedByBindingOptions(this, value)) {
-						$this.remove();
-						return;
-					}
-				
+
+                    if (!valueIsAllowedByBindingOptions(this, value, settings)) {
+                        $this.remove();
+                        return;
+                    }
+
                     switch (this.attribute) {
                         case "content":
                             $this.html(applyDataBindFormatters($this, value, this));
@@ -448,9 +448,11 @@
         });
     }
 
-    function applyDataBindFormatters($elem, value, data) {
+    function applyDataBindFormatters($elem, value, data, settings) {
         if (data.formatter && formatters[data.formatter]) {
-            return formatters[data.formatter].call($elem, value, data.formatOptions);
+            return (function (formatterSettings) {
+                return formatters[data.formatter].call($elem, value, data.formatOptions, formatterSettings);
+            })(settings);
         }
         return value;
     }
@@ -470,7 +472,7 @@
         return value;
     }
 
-    function applyFormatters($elem, value, attr) {
+    function applyFormatters($elem, value, attr, settings) {
         var formatterTarget = $elem.attr("data-format-target"),
             formatter;
 
@@ -478,13 +480,15 @@
             formatter = $elem.attr("data-format");
             if (formatter && typeof formatters[formatter] === "function") {
                 var formatOptions = $elem.attr("data-format-options");
-                return formatters[formatter].call($elem[0], value, formatOptions);
+                return (function (formatterSettings) {
+                    return formatters[formatter].call($elem[0], value, formatOptions, $.extend({}, formatterSettings));
+                })(settings);
             }
         }
 
         return value;
     }
-    addTemplateFormatter("nestedTemplateFormatter", function (value, options) {
+    addTemplateFormatter("nestedTemplateFormatter", function (value, options, internalSettings) {
         if (!options) {
             return;
         }
@@ -495,7 +499,7 @@
 
         var parentElement = options.parentElement || "div";
         var template = options.template || options;
-        return $("<" + parentElement + "/>").loadTemplate(template, value, settings);
+        return $("<" + parentElement + "/>").loadTemplate(template, value, internalSettings);
     });
     $.fn.loadTemplate = loadTemplate;
     $.addTemplateFormatter = addTemplateFormatter;

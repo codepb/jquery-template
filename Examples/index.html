@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -10,105 +9,7 @@
         <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
         <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="../jquery-loadTemplate/jquery.loadTemplate-1.3.4.js"></script>
-    </head>
-    <body>
-        <div class="head row">
-            <h1>Examples of jQuery.loadTemplate</h1>
-        </div>
-        
-        <div class="body row pure-g-r">
-            <div class="pure-u-1-6">
-                <div class="pure-menu pure-menu-open">
-                    <ul>
-                        <li class="pure-menu-heading">Examples!</li>
-                        <li><a href="SimpleExample/example.html">Basic Example</a></li>
-                        <li><a href="ExampleSearchResults/search.html">Simple Search</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="contentContainer pure-u-5-12">
-                <div>
-                    <div class="contentHead">
-                        <h3>Display</h3>
-                    </div>
-                    <div class="content"></div>
-                </div>
-            </div>
-            <div class="codeContainer pure-u-5-12">
-                <div>
-                    <div class="contentHead">
-                        <h3>Code</h3>
-                    </div>
-                    <pre>
-                        <code class="xml">
-                        </code>
-                    </pre>
-                </div>
-            </div>
-        </div>
-        <script>
-            $(function () {
-                $.ajaxSetup ({
-                    // Disable caching of AJAX responses
-                    cache: false
-                });
-                function getInternetExplorerVersion()
-                // Returns the version of Internet Explorer or a -1
-                // (indicating the use of another browser).
-                {
-                    var rv = -1; // Return value assumes failure.
-                    if (navigator.appName == 'Microsoft Internet Explorer') {
-                        var ua = navigator.userAgent;
-                        var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-                        if (re.exec(ua) != null)
-                            rv = parseFloat(RegExp.$1);
-                    }
-                    return rv;
-                }
-                function highlightSupported() {
-                    var ver = getInternetExplorerVersion();
-                    if (ver > -1) {
-                        if (ver < 9) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-                $("a").click(function (e) {
-                    e.preventDefault();
-                    var $div = $("<div/>");
-                    $($div).load($(this).attr("href"), function () {
-                        $(".contentContainer > div").hide();
-                        $(".codeContainer > div").hide();
-                        $(".contentContainer div.content").html($div.html());
-                        $(".codeContainer pre code").text($div.html());
-                        if(highlightSupported()) {
-                            $(".codeContainer pre code").each(function () {
-                                hljs.highlightBlock(this);
-                            });
-                        }
-                        $(".contentContainer > div").show();
-                        $(".codeContainer > div").show();
-                    });
-                });
-            });
-        </script>
-    </body>
-</html>
-=======
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Examples</title>
-        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/pure-min.css">
-        <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/vs.min.css">
-        <link rel="stylesheet" type="text/css" href="css/default.css"/>
-        <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
-        <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="../jquery-loadTemplate/jquery.loadTemplate-1.3.2.js"></script>
+        <script src="../jquery-loadTemplate/jquery.loadTemplate-1.4.0.js"></script>
     </head>
     <body>
         <div class="head row">
@@ -195,4 +96,3 @@
         </script>
     </body>
 </html>
->>>>>>> b0fa5ad281b71103a5231d72f4aefefeb455ba18
