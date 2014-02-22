@@ -13,6 +13,8 @@
 
 <div class="nested"></div>
 
+<div id="sampleContainer"></div>
+
 <!-- Template -->
 <script type="text/html" id="template">
     <img data-src="authorPicture" data-alt="author" data-link-wrap="authorPicture"/>
@@ -32,7 +34,18 @@
     <div data-content="testSingle"></div>
     <div data-template-bind='{"attribute": "content", "value": "testArray", "formatter": "nestedTemplateFormatter", "formatOptions": {"parentElement": "ul", "template": "#templateThis"}}'></div>
     <div data-content="testArray" data-format="nestedTemplateFormatter" data-format-options='{"parentElement": "ul", "template": "#templateThis"}'></div>
-    <div data-content="testArray" data-format="nestedTemplateFormatter" data-format-options='#templateThis'></div>
+</script>
+<script type="text/html" id="nestTest2">
+    <div data-content="nested-data" data-format="nestedTemplateFormatter" data-format-options="#templateThis"></div>
+</script>
+
+<script type="text/html" id="outerTemplate">
+    <div style="background-color:green;" data-content="month"></div>
+    <div style="background-color:red;" data-content-prepend="records" data-format="nestedTemplateFormatter" data-format-options='{"template":"#nestedTemplate"}'></div>
+</script>
+
+<script type="text/html" id="nestedTemplate">
+    <div data-content="full_date"></div>
 </script>
 
 <script type="text/javascript">
@@ -93,5 +106,14 @@
         $(".this-test").loadTemplate("#templateThis", ["testString1", "testString2", "testString3", 4]);
 
         $(".nested").loadTemplate("#nestTest", sampleData);
+
+        var data = [{ "month": "Juli",
+            "records": [{ "full_date": "01.06.2014"}]
+        },
+        { "month": "August",
+            "records": [{ "full_date": "01.07.2014"}]
+        }];
+
+        $('#sampleContainer').loadTemplate("#outerTemplate", data);
     });
 </script>

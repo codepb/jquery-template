@@ -96,10 +96,12 @@
             settings,
             {
                 complete: function () {
-                    if (doPrepend) {
-                        $that.prepend(this.html());
-                    } else {
-                        $that.append(this.html());
+                    if (this.html) {
+                        if (doPrepend) {
+                            $that.prepend(this.html());
+                        } else {
+                            $that.append(this.html());
+                        }
                     }
                     done++;
                     if (done === todo || errored) {
@@ -195,7 +197,7 @@
     function loadTemplateFromDocument($template, selection, data, settings) {
         var $templateContainer = $("<div/>");
 
-        if ($template.is("script")) {
+        if ($template.is("script") || $template.is("template")) {
             $template = $.parseHTML($.trim($template.html()));
         }
 
