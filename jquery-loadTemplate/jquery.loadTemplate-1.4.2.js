@@ -310,6 +310,10 @@
             $elem.attr("alt", applyFormatters($elem, value, "alt", settings));
         });
 
+        processElements("data-id", template, data, settings, function ($elem, value) {
+            $elem.attr("id", applyFormatters($elem, value, "id", settings));
+        });
+
         processElements("data-value", template, data, settings, function ($elem, value) {
             $elem.attr("value", applyFormatters($elem, value, "value", settings));
         });
