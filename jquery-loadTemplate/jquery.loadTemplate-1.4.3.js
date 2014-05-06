@@ -471,7 +471,7 @@
             part,
             value = data;
 
-        while ((part = paramParts.shift()) && typeof value !== "undefined") {
+        while ((part = paramParts.shift()) && typeof value !== "undefined" && value != null) {
             value = value[part];
         }
 
@@ -505,7 +505,12 @@
 
         var parentElement = options.parentElement || "div";
         var template = options.template || options;
-        return $("<" + parentElement + "/>").loadTemplate(template, value, internalSettings);
+        
+        //If a parent is specified, return it; otherwise only return the generated children.
+        if(options.parentElement)
+            return $("<" + parentElement + "/>").loadTemplate(template, value, internalSettings);
+        else
+            return $("<" + parentElement + "/>").loadTemplate(template, value, internalSettings).children();
     });
     $.fn.loadTemplate = loadTemplate;
     $.addTemplateFormatter = addTemplateFormatter;
