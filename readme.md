@@ -99,6 +99,7 @@ There are a number of different bindings and ways to bind the data. The followin
 - "data-content-append" - appends the value to the end of the element (uses $(elem).append(value))
 - "data-content-prepend" - prepends the value to the beginning of the element (uses $(elem).prepend(value))
 - "data-id" - sets the id of the element to the value provided (uses $(elem).attr("id", value));
+- "data-href" - sets the href value of the element to the value provided (uses $(elem).attr("href", value));
 - "data-alt" - sets the alt value of the element to the value provided (uses $(elem).attr("alt", value));
 - "data-value" - sets the value attribute of the element to the value provided (uses $(elem).val(value))
 - "data-link" - sets the innerHtml of the element to be a link to the value provided (wraps the content in an &lt;a&gt; tag).
