@@ -305,6 +305,12 @@
         }, function ($elem) {
             $elem.remove();
         });
+        
+        processElements("data-href", template, data, settings, function ($elem, value) {
+            $elem.attr("href", applyFormatters($elem, value, "href", settings));
+        }, function ($elem) {
+            $elem.remove();
+        });
 
         processElements("data-alt", template, data, settings, function ($elem, value) {
             $elem.attr("alt", applyFormatters($elem, value, "alt", settings));
