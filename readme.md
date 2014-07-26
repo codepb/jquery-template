@@ -96,6 +96,7 @@ Formatters must be added before they are used else a template will not be able t
 There are a number of different bindings and ways to bind the data. The following attributes are available:
 
 - "data-content" - binds the value supplied to the content of the element (uses $(elem).html(value))
+- "data-content-text" - binds the value supplied to the content of the element as text (uses $(elem).text(value))
 - "data-content-append" - appends the value to the end of the element (uses $(elem).append(value))
 - "data-content-prepend" - prepends the value to the beginning of the element (uses $(elem).prepend(value))
 - "data-id" - sets the id of the element to the value provided (uses $(elem).attr("id", value));
