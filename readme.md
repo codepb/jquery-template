@@ -125,7 +125,11 @@ An example of using the "data-template-bind" attribute would be the following:
 
 ### Options
 
-There are a number of options the plugin accepts. These are:
+There are a number of options the plugin accepts. These can be set by passing an object containing the settings you would like to set as the third parameter to .loadTemplate:
+
+    $(container).loadTemplate(template, data, { append: true, elemPerPage: 20 });
+
+The full list of options are:
 
 - "overwriteCache" (default false) - Whether to ignore the cache and reload the template (if you've previously loaded the template, but it might have changed, you'll want to set this to true.
 - "complete" (default null) - Callback function to call on complete. Will always be called regardless of success or failure.
