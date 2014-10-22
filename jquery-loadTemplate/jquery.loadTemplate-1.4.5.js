@@ -300,6 +300,10 @@
             $elem.text(applyFormatters($elem, value, "content", settings));
         });
 
+        processElements("data-innerHTML", template, data, settings, function ($elem, value) {
+            $elem.html(applyFormatters($elem, value, "content", settings));
+        });
+
         processElements("data-src", template, data, settings, function ($elem, value) {
             $elem.attr("src", applyFormatters($elem, value, "src", settings));
         }, function ($elem) {
@@ -322,6 +326,10 @@
 
         processElements("data-value", template, data, settings, function ($elem, value) {
             $elem.attr("value", applyFormatters($elem, value, "value", settings));
+        });
+
+        processElements("data-class", template, data, settings, function ($elem, value) {
+            $elem.addClass(applyFormatters($elem, value, "class", settings));
         });
 
         processElements("data-link", template, data, settings, function ($elem, value) {
@@ -430,6 +438,7 @@
 
                     switch (this.attribute) {
                         case "content":
+                        case "innerHTML":
                             $this.html(applyDataBindFormatters($this, value, this));
                             break;
                         case "contentAppend":

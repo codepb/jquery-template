@@ -95,7 +95,8 @@ Formatters must be added before they are used else a template will not be able t
 ### Bindings
 There are a number of different bindings and ways to bind the data. The following attributes are available:
 
-- "data-content" - binds the value supplied to the content of the element (uses $(elem).html(value))
+- "data-innerHTML" (<= 1.4.5) - binds the value supplied to the content (innerHTML) of the element (uses $(elem).html(value))
+- "data-content" - alias for the newer "data-innerHTML"
 - "data-content-text" - binds the value supplied to the content of the element as text (uses $(elem).text(value))
 - "data-content-append" - appends the value to the end of the element (uses $(elem).append(value))
 - "data-content-prepend" - prepends the value to the beginning of the element (uses $(elem).prepend(value))
@@ -103,6 +104,7 @@ There are a number of different bindings and ways to bind the data. The followin
 - "data-href" - sets the href value of the element to the value provided (uses $(elem).attr("href", value));
 - "data-alt" - sets the alt value of the element to the value provided (uses $(elem).attr("alt", value));
 - "data-value" - sets the value attribute of the element to the value provided (uses $(elem).val(value))
+- "data-class" - sets the class attribute of the element to the value provided (uses $(elem).class(value))
 - "data-link" - sets the innerHtml of the element to be a link to the value provided (wraps the content in an &lt;a&gt; tag).
 - "data-link-wrap" - wraps the element in a link to the value provided. Same as "data-link", but the &lt;a&gt; tag wraps the element as well as the content.
 - "data-options" - adds options to a select box. The value for this should reference an array of strings, each option will be output as a separate option. The value will be the same as the displayed text for each option. For a more powerful version of this look at the data-template-bind option.
