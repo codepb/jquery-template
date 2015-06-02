@@ -134,6 +134,7 @@ There are a number of options the plugin accepts. These can be set by passing an
 The full list of options are:
 
 - "overwriteCache" (default false) - Whether to ignore the cache and reload the template (if you've previously loaded the template, but it might have changed, you'll want to set this to true.
+- "async" (default true) - Whether to load templates asynchronously (if templates require an Ajax call)
 - "complete" (default null) - Callback function to call on complete. Will always be called regardless of success or failure.
 - "success" (default null) - Callback function to call on successful completion.
 - "error" (default, outputting error message to template container) - Callback function to call on error.
