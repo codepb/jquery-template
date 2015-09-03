@@ -83,6 +83,7 @@
             done = 0,
             success = 0,
             errored = false,
+            errorObjects = [],
             newOptions;
 
         if (settings.paged) {
@@ -95,6 +96,7 @@
             {},
             settings,
             {
+                async: false,
                 complete: function () {
                     if (this.html) {
                         if (doPrepend) {
@@ -106,7 +108,7 @@
                     done++;
                     if (done === todo || errored) {
                         if (errored && settings && typeof settings.error === "function") {
-                            settings.error.call($that);
+                            settings.error.call($that, errorObjects);
                         }
                         if (settings && typeof settings.complete === "function") {
                             settings.complete();
@@ -121,8 +123,9 @@
                         }
                     }
                 },
-                error: function () {
+                error: function (e) {
                     errored = true;
+                    errorObjects.push(e);
                 }
             }
         );
@@ -188,8 +191,8 @@
                 $templateContainer.html(templateContent);
                 handleTemplateLoadingSuccess($templateContainer, template, selection, data, settings);
             },
-            error: function () {
-                handleTemplateLoadingError(template, selection, data, settings);
+            error: function (e) {
+                handleTemplateLoadingError(template, selection, data, settings, e);
             }
         });
     }
@@ -215,7 +218,7 @@
         $(this).each(function () {
             var $templateHtml = $(template.html());
             if (settings.beforeInsert) {
-                settings.beforeInsert($templateHtml);
+                settings.beforeInsert($templateHtml, data);
             }
             if (settings.append) {
 
@@ -226,7 +229,7 @@
                 $(this).html($templateHtml);
             }
             if (settings.afterInsert) {
-                settings.afterInsert($templateHtml);
+                settings.afterInsert($templateHtml, data);
             }
         });
 
@@ -235,16 +238,16 @@
         }
     }
 
-    function handleTemplateLoadingError(template, selection, data, settings) {
+    function handleTemplateLoadingError(template, selection, data, settings, error) {
         var value;
 
         if (typeof settings.error === "function") {
-            settings.error.call(selection);
+            settings.error.call(selection, error);
         }
 
         $(queue[template]).each(function (key, value) {
             if (typeof value.settings.error === "function") {
-                value.settings.error.call(value.selection);
+                value.settings.error.call(value.selection, error);
             }
         });
 
@@ -309,7 +312,7 @@
         }, function ($elem) {
             $elem.remove();
         });
-        
+
         processElements("data-href", template, data, settings, function ($elem, value) {
             $elem.attr("href", applyFormatters($elem, value, "href", settings));
         }, function ($elem) {
@@ -520,9 +523,9 @@
 
         var parentElement = options.parentElement || "div";
         var template = options.template || options;
-        
+
         //If a parent is specified, return it; otherwise only return the generated children.
-        if(options.parentElement)
+        if (options.parentElement)
             return $("<" + parentElement + "/>").loadTemplate(template, value, internalSettings);
         else
             return $("<" + parentElement + "/>").loadTemplate(template, value, internalSettings).children();
