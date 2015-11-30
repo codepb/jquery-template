@@ -58,6 +58,10 @@ Similarly the content of the template could be held in a separate html file with
 
 The plugin has a number of data-... attributes that can be used to populate various attributes with the data. There is also the powerful data-template-bind attribute that accepts a JSON object, enabling binding to any attribute, or the content of the element.
 
+#### Arrays
+
+You can pass an array of objects instead of a single object and the template will be populated and added to the container for each item in the array. There are options built in that allow you to page the results from an array as well. See the options section below and the included examples. 
+
 ### Data Formatters
 
 It is also possible to define data formatters. These are assigned through the `$.addTemplateFormatter` method. This function either accepts a map of functions and the keys that they will be referenced by, or a single function with a single key as two separate parameters. Each formatter takes two values, the value being assigned, and a template to use to define how this data is displayed. The data-format-template may be empty. Example usage of this is below:
@@ -95,7 +99,7 @@ Formatters must be added before they are used else a template will not be able t
 ### Bindings
 There are a number of different bindings and ways to bind the data. The following attributes are available:
 
-- "data-innerHTML" (<= 1.4.5) - binds the value supplied to the content (innerHTML) of the element (uses $(elem).html(value))
+- "data-innerHTML" (>= 1.4.5) - binds the value supplied to the content (innerHTML) of the element (uses $(elem).html(value))
 - "data-content" - alias for the newer "data-innerHTML"
 - "data-content-text" - binds the value supplied to the content of the element as text (uses $(elem).text(value))
 - "data-content-append" - appends the value to the end of the element (uses $(elem).append(value))
