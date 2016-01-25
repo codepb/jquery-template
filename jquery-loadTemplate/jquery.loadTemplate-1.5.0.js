@@ -2,7 +2,8 @@
     "use strict";
     var templates = {},
         queue = {},
-        formatters = {};
+        formatters = {},
+        isArray;
 
     function loadTemplate(template, data, options) {
         var $that = this,
@@ -39,6 +40,7 @@
         }, options);
 
         if ($.type(data) === "array") {
+            isArray = true;
             return processArray.call(this, template, data, settings);
         }
 
@@ -97,12 +99,16 @@
             settings,
             {
                 async: false,
-                complete: function () {
+                complete: function (data) {
                     if (this.html) {
+                        var insertedElement;
                         if (doPrepend) {
-                            $that.prepend(this.html());
+                            insertedElement = $(this.html()).prependTo($that);
                         } else {
-                            $that.append(this.html());
+                            insertedElement = $(this.html()).appendTo($that);
+                        }
+                        if (settings.afterInsert && data) {
+                            settings.afterInsert(insertedElement, data);
                         }
                     }
                     done++;
@@ -228,13 +234,13 @@
             } else {
                 $(this).html($templateHtml);
             }
-            if (settings.afterInsert) {
+            if (settings.afterInsert && !isArray) {
                 settings.afterInsert($templateHtml, data);
             }
         });
 
         if (typeof settings.complete === "function") {
-            settings.complete.call($(this));
+            settings.complete.call($(this), data);
         }
     }
 
