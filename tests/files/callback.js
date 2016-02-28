@@ -49,12 +49,12 @@
                     afterInsert : function(elem){
                         sequence.push('after');
                         
+                        ++afterInsertCounter;
+
                         if ($('#render').children().length === afterInsertCounter) {
                             elemSequence.push(true);
                         }
-                        
-                        ++afterInsertCounter;
-                        
+                                                
                     },
                     complete : function(){
                         sequence.push('complete');
