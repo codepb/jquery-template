@@ -1,16 +1,14 @@
 {
   "name": "jquery-load-template",
-  "version": "1.5.1",
   "authors": [
     { "name": "Paul Burgess"}
   ],
   "homepage": "http://codepb.github.io/jquery-template/",
   "repository": {
       "type": "git",
-      "url": "git://github.com/codepb/jquery-template.git"
+      "url": "https://github.com/codepb/jquery-template.git"
   },
   "description": "jQuery plugin for loading and using templates. The plugin is designed to be simple yet powerful, and supports loading templates from within the page, or using AJAX to load html files.",
-  "main": "jquery-loadTemplate/jquery.loadTemplate.js",
   "ignore": [
     "Examples",
     "tests",
