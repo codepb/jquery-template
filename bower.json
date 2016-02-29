@@ -9,7 +9,7 @@
       "type": "git",
       "url": "https://github.com/codepb/jquery-template.git"
   },
-  "main": "jquery.loadTemplate-1.5.4.js"
+  "main": "jquery.loadTemplate-1.5.4.js",
   "keywords": [
         "templates",
         "templating",
