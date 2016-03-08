@@ -64,7 +64,7 @@ You can pass an array of objects instead of a single object and the template wil
 
 ### Data Formatters
 
-It is also possible to define data formatters. These are assigned through the `$.addTemplateFormatter` method. This function either accepts a map of functions and the keys that they will be referenced by, or a single function with a single key as two separate parameters. Each formatter takes two values, the value being assigned, and a template to use to define how this data is displayed. The data-format-template may be empty. Example usage of this is below:
+It is also possible to define data formatters. These are assigned through the `$.addTemplateFormatter` method. This function either accepts a map of functions and the keys that they will be referenced by, or a single function with a single key as two separate parameters. Each formatter takes two values, the value being assigned, and a template to use to define how this data is displayed. The data-format-options may be empty. Example usage of this is below:
 
     $.addTemplateFormatter("UpperCaseFormatter",
         function(value, template) {
