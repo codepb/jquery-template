@@ -103,9 +103,9 @@
                     if (this.html) {
                         var insertedElement;
                         if (doPrepend) {
-                            insertedElement = $(this.html()).prependTo($that);
+                            insertedElement = $(this).prependTo($that);
                         } else {
-                            insertedElement = $(this.html()).appendTo($that);
+                            insertedElement = $(this).appendTo($that);
                         }
                         if (settings.afterInsert && data) {
                             settings.afterInsert(insertedElement, data);
@@ -222,7 +222,10 @@
         bindData(template, data, settings);
 
         $(this).each(function () {
-            var $templateHtml = $(template.html());
+            var $templateHtml = template.clone(true);
+            $("select", $templateHtml).each(function (key, value) {
+                $(this).val($("select", template).eq(key).val())
+            });
             if (settings.beforeInsert) {
                 settings.beforeInsert($templateHtml, data);
             }
@@ -232,7 +235,7 @@
             } else if (settings.prepend) {
                 $(this).prepend($templateHtml);
             } else {
-                $(this).html($templateHtml);
+                $(this).html("").append($templateHtml);
             }
             if (settings.afterInsert && !isArray) {
                 settings.afterInsert($templateHtml, data);
@@ -333,9 +336,7 @@
             $elem.attr("id", applyFormatters($elem, value, "id", settings));
         });
 
-        processElements("data-value", template, data, settings, function ($elem, value) {
-            $elem.attr("value", applyFormatters($elem, value, "value", settings));
-        });
+
 
         processElements("data-class", template, data, settings, function ($elem, value) {
             $elem.addClass(applyFormatters($elem, value, "class", settings));
@@ -362,6 +363,12 @@
         });
 
         processAllElements(template, data, settings);
+
+        processElements("data-value", template, data, settings, function ($elem, value) {
+            $elem.val(applyFormatters($elem, value, "value", settings));
+        });
+
+
     }
 
     function processElements(attribute, template, data, settings, dataBindFunction, noDataFunction) {

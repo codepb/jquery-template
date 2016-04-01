@@ -56,6 +56,7 @@
             date: '25th May 2013',
             authorPicture: 'SimpleExample/img/joeBloggs.gif',
             options: [{ value: 1, content: 'test' }, { value: 2, content: 'test2'}],
+            selectedItem: 2,
             post: 'This is the contents of my post'
         };
 
@@ -100,7 +101,8 @@
 
         var sampleData = {
             testSingle: "singleString",
-            testArray: ["testString1", "testString2", "testString3", 4]
+            testArray: ["testString1", "testString2", "testString3", 4],
+            selectedItem: "testString2"
         }
 
         $(".this-test").loadTemplate("#templateThis", ["testString1", "testString2", "testString3", 4]);
