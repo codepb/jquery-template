@@ -28,6 +28,7 @@
             paged: false,
             pageNo: 1,
             elemPerPage: 10,
+            noDivWrapper: false,
             append: false,
             prepend: false,
             beforeInsert: null,
@@ -140,10 +141,12 @@
             $that.html("");
         }
 
+        if (settings.noDivWrapper) { newOptions.append = true; }
+
         if (doPrepend) data.reverse();
         $(data).each(function () {
             var $div = $("<div/>");
-            loadTemplate.call($div, template, this, newOptions);
+            loadTemplate.call(settings.noDivWrapper ? $that : $div, template, this, newOptions);
             if (errored) {
                 return false;
             }
@@ -156,7 +159,7 @@
         if (queue[template]) {
             queue[template].push({ data: data, selection: selection, settings: settings });
         } else {
-            queue[template] = [{ data: data, selection: selection, settings: settings}];
+            queue[template] = [{ data: data, selection: selection, settings: settings }];
         }
     }
 
@@ -194,7 +197,7 @@
             url: templateUrl,
             async: settings.async,
             success: function (templateContent) {
-                $templateContainer.html(templateContent);
+                $templateContainer = settings.noDivWrapper ? $(templateContent) : $templateContainer.html(templateContent);
                 handleTemplateLoadingSuccess($templateContainer, template, selection, data, settings);
             },
             error: function (e) {
@@ -207,10 +210,10 @@
         var $templateContainer = $("<div/>");
 
         if ($template.is("script") || $template.is("template")) {
-            $template = $.parseHTML($.trim($template.html()));
+            $template = $($.parseHTML($.trim($template.html())));
         }
 
-        $templateContainer.html($template);
+        $templateContainer = settings.noDivWrapper ? $template : $templateContainer.html($template);
         prepareTemplate.call(selection, $templateContainer, data, settings);
 
         if (typeof settings.success === "function") {
