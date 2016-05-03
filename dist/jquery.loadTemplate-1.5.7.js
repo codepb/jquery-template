@@ -222,7 +222,7 @@
     }
 
     function prepareTemplate(template, data, settings) {
-        bindData(template, data, settings);
+        bindData(settings.noDivWrapper ? $('<div></div>').append(template) : template, data, settings);
 
         $(this).each(function () {
             var $templateHtml = template.clone(true);
