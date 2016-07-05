@@ -206,10 +206,11 @@
     }
 
     function prepareTemplate(template, data, settings) {
+        var template = $("<div/>").append(template);
         bindData(template, data, settings);
 
         $(this).each(function () {
-            var $templateHtml = $(template).clone(true);
+            var $templateHtml = template.children().clone(true);
             $("select", $templateHtml).each(function (key, value) {
                 $(this).val($("select", template).eq(key).val())
             });
@@ -224,7 +225,7 @@
             } else {
                 $(this).html("").append($templateHtml);
             }
-            if (settings.afterInsert && !isArray) {
+            if (settings.afterInsert) {
                 settings.afterInsert($templateHtml, data);
             }
         });
@@ -359,7 +360,7 @@
     }
 
     function processElements(attribute, template, data, settings, dataBindFunction, noDataFunction) {
-        $("[" + attribute + "]", $("<div/>").append(template)).each(function () {
+        $("[" + attribute + "]", template).each(function () {
             var $this = $(this),
                 param = $this.attr(attribute),
                 value = getValue(data, param);
@@ -418,7 +419,7 @@
     }
 
     function processAllElements(template, data, settings) {
-        $("[data-template-bind]", $("<div/>").append(template)).each(function () {
+        $("[data-template-bind]", template).each(function () {
             var $this = $(this),
                 param = $.parseJSON($this.attr("data-template-bind"));
 
