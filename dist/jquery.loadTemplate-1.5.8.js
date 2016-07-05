@@ -94,23 +94,17 @@
             todo = data.length;
         }
 
+        if (!settings.append && !settings.prepend) {
+            $that.html("");
+        }
+
         newOptions = $.extend(
             {},
             settings,
             {
                 async: false,
+                append: !settings.prepend && true,
                 complete: function (data) {
-                    if (this.html) {
-                        var insertedElement;
-                        if (doPrepend) {
-                            insertedElement = $(this).prependTo($that);
-                        } else {
-                            insertedElement = $(this).appendTo($that);
-                        }
-                        if (settings.afterInsert && data) {
-                            settings.afterInsert(insertedElement, data);
-                        }
-                    }
                     done++;
                     if (done === todo || errored) {
                         if (errored && settings && typeof settings.error === "function") {
@@ -136,14 +130,12 @@
             }
         );
 
-        if (!settings.append && !settings.prepend) {
-            $that.html("");
-        }
+
 
         if (doPrepend) data.reverse();
         $(data).each(function () {
-            var $div = $("<div/>");
-            loadTemplate.call($div, template, this, newOptions);
+
+            loadTemplate.call($that, template, this, newOptions);
             if (errored) {
                 return false;
             }
@@ -183,7 +175,6 @@
     }
 
     function loadAndPrepareTemplate(template, selection, data, settings) {
-        var $templateContainer = $("<div/>");
 
         templates[template] = null;
         var templateUrl = template;
@@ -194,8 +185,7 @@
             url: templateUrl,
             async: settings.async,
             success: function (templateContent) {
-                $templateContainer.html(templateContent);
-                handleTemplateLoadingSuccess($templateContainer, template, selection, data, settings);
+                handleTemplateLoadingSuccess($(templateContent), template, selection, data, settings);
             },
             error: function (e) {
                 handleTemplateLoadingError(template, selection, data, settings, e);
@@ -204,14 +194,11 @@
     }
 
     function loadTemplateFromDocument($template, selection, data, settings) {
-        var $templateContainer = $("<div/>");
-
         if ($template.is("script") || $template.is("template")) {
             $template = $.parseHTML($.trim($template.html()));
         }
 
-        $templateContainer.html($template);
-        prepareTemplate.call(selection, $templateContainer, data, settings);
+        prepareTemplate.call(selection, $template, data, settings);
 
         if (typeof settings.success === "function") {
             settings.success();
@@ -222,7 +209,7 @@
         bindData(template, data, settings);
 
         $(this).each(function () {
-            var $templateHtml = template.clone(true);
+            var $templateHtml = $(template).clone(true);
             $("select", $templateHtml).each(function (key, value) {
                 $(this).val($("select", template).eq(key).val())
             });
@@ -372,7 +359,7 @@
     }
 
     function processElements(attribute, template, data, settings, dataBindFunction, noDataFunction) {
-        $("[" + attribute + "]", template).each(function () {
+        $("[" + attribute + "]", $("<div/>").append(template)).each(function () {
             var $this = $(this),
                 param = $this.attr(attribute),
                 value = getValue(data, param);
@@ -431,7 +418,7 @@
     }
 
     function processAllElements(template, data, settings) {
-        $("[data-template-bind]", template).each(function () {
+        $("[data-template-bind]", $("<div/>").append(template)).each(function () {
             var $this = $(this),
                 param = $.parseJSON($this.attr("data-template-bind"));
 
