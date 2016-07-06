@@ -102,7 +102,6 @@
             {},
             settings,
             {
-                async: false,
                 append: !settings.prepend && true,
                 complete: function (data) {
                     done++;
