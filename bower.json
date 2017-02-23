@@ -4,7 +4,7 @@
   "authors": [
     "Paul Burgess <paul.j.burgess@outlook.com>"
   ],
-  "description": "jQuery plugin for loading and using templates. The plugin is designed to be simple yet powerful, and supports loading templates from within the page, or using AJAX to load html files.",
+  "description": "jQuery plugin for loading and using templates. The plugin supports loading templates from within the page, or using AJAX to load html files.",
   "repository": {
       "type": "git",
       "url": "https://github.com/codepb/jquery-template.git"
