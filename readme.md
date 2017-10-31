@@ -110,6 +110,7 @@ There are a number of different bindings and ways to bind the data. The followin
 - "data-alt" - sets the alt value of the element to the value provided (uses $(elem).attr("alt", value));
 - "data-value" - sets the value attribute of the element to the value provided (uses $(elem).val(value))
 - "data-class" - sets the class attribute of the element to the value provided (uses $(elem).class(value))
+- "data-css" - sets the CSS attribute of the element to the value provided (uses $(elem).css(value))
 - "data-link" - sets the innerHtml of the element to be a link to the value provided (wraps the content in an &lt;a&gt; tag).
 - "data-link-wrap" - wraps the element in a link to the value provided. Same as "data-link", but the &lt;a&gt; tag wraps the element as well as the content.
 - "data-options" - adds options to a select box. The value for this should reference an array of strings, each option will be output as a separate option. The value will be the same as the displayed text for each option. For a more powerful version of this look at the data-template-bind option.
