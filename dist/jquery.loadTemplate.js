@@ -323,8 +323,10 @@
             $elem.attr("id", applyFormatters($elem, value, "id", settings));
         });
 
-
-
+        processElements("data-css", template, data, settings, function ($elem, value) {
+            $elem.css(applyFormatters($elem, value, "css", settings))
+        });
+        
         processElements("data-class", template, data, settings, function ($elem, value) {
             $elem.addClass(applyFormatters($elem, value, "class", settings));
         });
