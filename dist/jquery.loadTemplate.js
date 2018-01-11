@@ -318,6 +318,10 @@
         processElements("data-alt", template, data, settings, function ($elem, value) {
             $elem.attr("alt", applyFormatters($elem, value, "alt", settings));
         });
+        
+        processElements("data-title", template, data, settings, function ($elem, value) {
+            $elem.attr("title", applyFormatters($elem, value, "title", settings));
+        });
 
         processElements("data-id", template, data, settings, function ($elem, value) {
             $elem.attr("id", applyFormatters($elem, value, "id", settings));
