@@ -29,6 +29,9 @@
             pageNo: 1,
             elemPerPage: 10,
             append: false,
+            replace: false,
+            after: false,
+            before: false,
             prepend: false,
             beforeInsert: null,
             afterInsert: null,
@@ -94,7 +97,7 @@
             todo = data.length;
         }
 
-        if (!settings.append && !settings.prepend) {
+        if (!settings.append && !settings.prepend && !settings.replace && !settings.after && !settings.before) {
             $that.html("");
         }
 
@@ -102,7 +105,7 @@
             {},
             settings,
             {
-                append: !settings.prepend && true,
+                append: !settings.prepend && !settings.replace && !settings.after && !settings.before && true,
                 complete: function (data) {
                     done++;
                     if (done === todo || errored) {
@@ -216,11 +219,17 @@
             if (settings.beforeInsert) {
                 settings.beforeInsert($templateHtml, data);
             }
-            if (settings.append) {
 
+            if (settings.append) {
                 $(this).append($templateHtml);
             } else if (settings.prepend) {
                 $(this).prepend($templateHtml);
+            } else if (settings.replace) {
+                $(this).html("").replaceWith($templateHtml);
+            } else if (settings.after) {
+                $(this).after($templateHtml);
+            } else if (settings.before) {
+                $(this).before($templateHtml);
             } else {
                 $(this).html("").append($templateHtml);
             }
@@ -291,6 +300,18 @@
             $elem.append(applyFormatters($elem, value, "content", settings));
         });
 
+        processElements("data-content-replace", template, data, settings, function ($elem, value) {
+            $elem.replaceWith(applyFormatters($elem, value, "content", settings));
+        });
+
+        processElements("data-content-after", template, data, settings, function ($elem, value) {
+            $elem.after(applyFormatters($elem, value, "content", settings));
+        });
+
+        processElements("data-content-before", template, data, settings, function ($elem, value) {
+            $elem.before(applyFormatters($elem, value, "content", settings));
+        });
+
         processElements("data-content-prepend", template, data, settings, function ($elem, value) {
             $elem.prepend(applyFormatters($elem, value, "content", settings));
         });
@@ -318,19 +339,13 @@
         processElements("data-alt", template, data, settings, function ($elem, value) {
             $elem.attr("alt", applyFormatters($elem, value, "alt", settings));
         });
-        
-        processElements("data-title", template, data, settings, function ($elem, value) {
-            $elem.attr("title", applyFormatters($elem, value, "title", settings));
-        });
 
         processElements("data-id", template, data, settings, function ($elem, value) {
             $elem.attr("id", applyFormatters($elem, value, "id", settings));
         });
 
-        processElements("data-css", template, data, settings, function ($elem, value) {
-            $elem.css(applyFormatters($elem, value, "css", settings))
-        });
-        
+
+
         processElements("data-class", template, data, settings, function ($elem, value) {
             $elem.addClass(applyFormatters($elem, value, "class", settings));
         });
@@ -452,6 +467,15 @@
                             break;
                         case "contentAppend":
                             $this.append(applyDataBindFormatters($this, value, this));
+                            break;
+                        case "contentReplace":
+                            $this.replaceWith(applyDataBindFormatters($this, value, this));
+                            break;
+                        case "contentAfter":
+                            $this.after(applyDataBindFormatters($this, value, this));
+                            break;
+                        case "contentBefore":
+                            $this.before(applyDataBindFormatters($this, value, this));
                             break;
                         case "contentPrepend":
                             $this.prepend(applyDataBindFormatters($this, value, this));

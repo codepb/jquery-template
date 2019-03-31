@@ -105,6 +105,8 @@ There are a number of different bindings and ways to bind the data. The followin
 - "data-content-text" - binds the value supplied to the content of the element as text (uses $(elem).text(value))
 - "data-content-append" - appends the value to the end of the element (uses $(elem).append(value))
 - "data-content-prepend" - prepends the value to the beginning of the element (uses $(elem).prepend(value))
+- "data-content-before" - add the value before the element (uses $(elem).before(value))
+- "data-content-after" - add the value after the element (uses $(elem).after(value))
 - "data-id" - sets the id of the element to the value provided (uses $(elem).attr("id", value));
 - "data-href" - sets the href value of the element to the value provided (uses $(elem).attr("href", value));
 - "data-alt" - sets the alt value of the element to the value provided (uses $(elem).attr("alt", value));
@@ -151,6 +153,8 @@ The full list of options are:
 - "elemPerPage" (default 10) - The number of elements to display per page if the data is being paged.
 - "append" (default false) - If set to true, the template will be appended to the element rather than replacing the contents of the element.
 - "prepend" (default false) - If set to true, the template will be prepended to the element rather than replacing the contents of the element. The append option takes priority over prepend, so if both options are set to true, the element is appended and not prepended.
+- "before" (default false) - If set to true, the template will be added before the element rather than replacing the contents of the element.
+- "after" (default false) - If set to true, the template will be added after the element rather than replacing the contents of the element.
 - "beforeInsert" (default null) - Callback function to be called before inserting the template into the document. The format of the function is function($elem) where $elem is the jQuery object of the populated template about to be inserted into the document.
 - "afterInsert" (default null) - As above, a callback function to be called after inserting the template into the document. The format is the same as above.
 - "bindingOptions" (default all flags false): add flags to ignore certain types of values. {"ignoreUndefined": false, "ignoreNull": false, "ignoreEmptyString": false}. The flags you set here, are overwritten on an element level by those specified in a template with a "data-binding-options" or a "data-template-bind" attribute. Examples can be found in the Examples/OptionalBinding folder.
