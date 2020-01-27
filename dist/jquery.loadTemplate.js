@@ -283,6 +283,20 @@
     function bindData(template, data, settings) {
         data = data || {};
 
+        processElements("data-for", template, data, settings, function ($elem, items) {
+            let $replacer = $("<div/>");
+            items.forEach(item => {
+                item = typeof item != "object" ? {item} : item;
+                let $child = $elem.clone(true);
+                $replacer.append($child.loadTemplate($child, item, settings).html());
+            });
+            $elem.replaceWith($replacer.html());
+        });
+        
+        processElements("data-item-id", template, data, settings, function ($elem, value) {
+            $elem.attr("data-id", applyFormatters($elem, value, "id", settings));
+        });
+        
         processElements("data-content", template, data, settings, function ($elem, value) {
             $elem.html(applyFormatters($elem, value, "content", settings));
         });
