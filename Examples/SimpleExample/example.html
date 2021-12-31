@@ -1,4 +1,18 @@
-<h1>Example Usage of jQuery.loadTemplate</h1>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Examples</title>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/pure-min.css">
+        <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/vs.min.css">
+        <link rel="stylesheet" type="text/css" href="css/default.css"/>
+        <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+        <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="../../dist/jquery.loadTemplate.js"></script>
+    </head>
+    <body>
+        <h1>Example Usage of jQuery.loadTemplate</h1>
 <h2>Example of loading an html template from the application</h2>
 <p>Loading Multiple posts into a single container. Templates loaded from an external source</p>
 <div class="simple-template-container"></div>
@@ -54,7 +68,7 @@
         var post = {
             author: 'Joe Bloggs',
             date: '25th May 2013',
-            authorPicture: 'SimpleExample/img/joeBloggs.gif',
+            authorPicture: 'img/joeBloggs.gif',
             options: [{ value: 1, content: 'test' }, { value: 2, content: 'test2'}],
             selectedItem: 2,
             post: 'This is the contents of my post'
@@ -65,7 +79,7 @@
             {
                 author: 'Joe Bloggs 2',
                 date: '28th May 2013',
-                authorPicture: 'SimpleExample/img/joeBloggs.gif',
+                authorPicture: 'img/joeBloggs.gif',
                 options: [{ value: 3, content: 'test3' }, { value: 4, content: 'test4' }, { value: 5, content: 'test5' }, { value: 6, content: 'test6'}],
                 post: 'This is the contents of my other post'
             }
@@ -89,11 +103,11 @@
 
         // Load template from our templates folder,
         // and populate the data from the post object.
-        $(".simple-template-container").loadTemplate("SimpleExample/Templates/simple.html", posts, {error: function(e) { console.log(e); }});
+        $(".simple-template-container").loadTemplate("Templates/simple.html", posts, {error: function(e) { console.log(e); }});
 
         // Load template from our templates folder,
         // and populate the data from the post object.
-        $(".simple-template-container-single").loadTemplate("SimpleExample/Templates/simple.html", post, { overwriteCache: true });
+        $(".simple-template-container-single").loadTemplate("Templates/simple.html", post, { overwriteCache: true });
 
         // Load template from element on same page,
         // and populate the data from the post object.
@@ -119,3 +133,6 @@
         $('#sampleContainer').loadTemplate("#outerTemplate", data);
     });
 </script>
+
+</body>
+</html>

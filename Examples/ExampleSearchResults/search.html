@@ -1,4 +1,18 @@
-<h2>Example of using jQuery.loadTemplate for improved search.</h2>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Examples</title>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/pure-min.css">
+        <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/vs.min.css">
+        <link rel="stylesheet" type="text/css" href="css/default.css"/>
+        <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+        <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="../../dist/jquery.loadTemplate.js"></script>
+    </head>
+    <body>
+        <h2>Example of using jQuery.loadTemplate for improved search.</h2>
 <p>jQuery.loadTemplate can be used for easily displaying data sets. 
 The example below is an example of utilising this. When the search button is pressed,  
 data is fetched from the server in the form of a JSON object. Processing this data is done
@@ -71,7 +85,7 @@ are not provided).</p>
         });
 
         function displayPage(pageNo) {
-            $("#ResultsDisplay tbody").loadTemplate("ExampleSearchResults/Templates/SearchResult.html", data, {paged: true, pageNo: pageNo, elemPerPage: resultsPerPage, success: function() {console.log('success');}, complete: function(){console.log('complete')}, error: function(){console.log('error');}});
+            $("#ResultsDisplay tbody").loadTemplate("Templates/SearchResult.html", data, {paged: true, pageNo: pageNo, elemPerPage: resultsPerPage, success: function() {console.log('success');}, complete: function(){console.log('complete')}, error: function(){console.log('error');}});
             page = pageNo;
             if (page * resultsPerPage > data.length) {
                 $("[data-action='next']").attr('disabled', 'disabled');
@@ -88,3 +102,5 @@ are not provided).</p>
         }
     });
 </script>
+</body>
+</html>
